@@ -142,8 +142,14 @@ jobs:
           echo ""
           echo "=== sanoTTS-jp engine (binary only — no model data may ship) ==="
           ls -la kobo-tts-bundle/audiobook.koplugin/sanotts-jp/
-          if [ -n "$(find kobo-tts-bundle/audiobook.koplugin/sanotts-jp -type f -size +100k 2>/dev/null)" ]; then
-            echo "ERROR: sanoTTS-jp dir contains model data; weights and dictionary must never ship in the zip"
+          # Exactly one file may ship: the engine binary itself.  Anything
+          # else in this directory (weights, dictionary, stray test output)
+          # is model data and must never reach the zip.  A size threshold
+          # cannot express this: the binary is ~250 KB while the smallest
+          # weights blob is 654 KB.
+          JP_COUNT=$(find kobo-tts-bundle/audiobook.koplugin/sanotts-jp -type f | wc -l)
+          if [ ! -f kobo-tts-bundle/audiobook.koplugin/sanotts-jp/snt_jp_server ] || [ "$JP_COUNT" != "1" ]; then
+            echo "ERROR: sanoTTS-jp dir must contain exactly snt_jp_server and nothing else (found $JP_COUNT files)"
             exit 1
           fi
           echo ""
