@@ -4747,22 +4747,11 @@ function TTSEngine:findAudioPlayer()
         end
 
         if bt:isBluealsaRunning() then
-            local plugin_dir = bt:getBluealsaPluginDir()
             local ba_dev = bt:getBluealsaDevice()
-            -- ALSA_PLUGIN_DIR tells libasound where to find the bluealsa
-            -- PCM plugin .so. The PCM type "bluealsa" is defined in
-            -- /etc/asound.conf (installed by startBluealsa).
-            -- LD_LIBRARY_PATH is needed so that when aplay loads the PCM
-            -- plugin, the plugin's own deps (libsbc, libglib, libdbus,
-            -- libbluetooth) can be resolved from our bundled libs.
-            local lib_dir = plugin_dir and plugin_dir:gsub("/alsa%-lib$", "")
-            local env = ""
-            if plugin_dir then
-                env = "ALSA_PLUGIN_DIR=" .. plugin_dir .. " "
-            end
-            if lib_dir then
-                env = "LD_LIBRARY_PATH=" .. lib_dir .. " " .. env
-            end
+            -- Env prefix (ALSA_PLUGIN_DIR for the bluealsa PCM plugin .so,
+            -- LD_LIBRARY_PATH for the plugin's own deps: libsbc, libglib,
+            -- libdbus, libbluetooth) is built by BTManager:getBluealsaEnv().
+            local env = bt:getBluealsaEnv()
             self.audio_player_type = "bluealsa"
             self._bluealsa_env = env
             self._no_real_audio_output = false

@@ -147,6 +147,23 @@ function Audiobook:init()
     end
     self._init_ok = true
 
+    -- ── Bluetooth stack restore (Kobo BlueZ; issue #93) ─────────────
+    -- koreader.sh kills bluetoothd and bluealsa when KOReader starts
+    -- from Nickel, and nothing restarts them -- not inside KOReader,
+    -- and not after returning to Nickel either.  When the user has a
+    -- saved BT device, bring the stack back up and reconnect it.
+    -- Deferred so init stays responsive; the call itself returns
+    -- immediately when there is nothing to do.
+    pcall(function()
+        if Device:isKobo() and self.bt_manager then
+            UIManager:scheduleIn(2, function()
+                pcall(function()
+                    self.bt_manager:restoreSavedDevice(self)
+                end)
+            end)
+        end
+    end)
+
     -- Install SleepCover event override so we can prevent device suspend
     -- while audio is playing (when the user enables the setting).
     self:_installSleepCoverOverride()

@@ -1542,6 +1542,36 @@ function MediaEngine:_playMplayer(gen)
     return true
 end
 
+--- Build the BlueALSA aplay command for the ffmpeg-pipe sink on a
+-- BlueZ Kobo, or nil when BT audio should not be used (different stack,
+-- no connected audio device, BlueALSA unavailable).  Ensures the
+-- BlueALSA daemon is running first; may block for a few seconds while
+-- it starts.  The returned string includes the env prefix the aplay
+-- invocation needs.
+-- @treturn string|nil
+function MediaEngine:_bluealsaSinkCommand()
+    local bt = self.plugin.bt_manager
+    if bt:getStackType() ~= "bluez" then return nil end
+    local connected = false
+    for _, dev in ipairs(bt:listAudioDevices() or {}) do
+        if dev.connected then
+            connected = true
+            break
+        end
+    end
+    if not connected then return nil end
+    if not bt:isBluealsaRunning() then
+        if not bt:hasBluealsaBundled() then return nil end
+        logger.warn("MediaEngine: BlueALSA not running, starting it for BT playback")
+        if not bt:startBluealsa() and not bt:isBluealsaRunning() then
+            logger.warn("MediaEngine: BlueALSA did not start, falling back to aplay")
+            return nil
+        end
+    end
+    return bt:getBluealsaEnv()
+        .. "aplay -f S16_LE -r 44100 -c 2 -D " .. bt:getBluealsaDevice()
+end
+
 function MediaEngine:_playFfmpegPipe(gen)
     -- ffmpeg decodes to raw PCM; on Kobo we pipe through gstreamer
     -- to the MTK Bluetooth sink because aplay has no ALSA soundcards.
@@ -1571,6 +1601,18 @@ function MediaEngine:_playFfmpegPipe(gen)
         player_cmd = 'gst-launch-1.0 fdsrc fd=0 ! audio/x-raw,format=S16LE,rate=44100,channels=2 ! audioconvert ! audioresample ! mtkbtmwrpcaudiosink'
     else
         player_cmd = 'aplay -f S16_LE -r 44100 -c 2'
+        -- On BlueZ Kobo devices (Libra 2, Sage fw >= 4.38, ...), route to
+        -- the connected Bluetooth device through the BlueALSA PCM.  Bare
+        -- aplay plays to the default ALSA device: the internal speaker
+        -- where one exists, and nothing at all on MTK hardware, which
+        -- exposes no ALSA card under KOReader (issue #93).
+        if Device.isKobo and Device:isKobo()
+                and self.plugin and self.plugin.bt_manager then
+            local bt_cmd = self:_bluealsaSinkCommand()
+            if bt_cmd then
+                player_cmd = bt_cmd
+            end
+        end
     end
 
     local atempo = self:_atempoFilterString(self._playback_speed)
@@ -1610,7 +1652,8 @@ function MediaEngine:_playFfmpegPipe(gen)
 
     logger.warn("MediaEngine: ffmpeg-pipe launch gen=", gen,
         "offset=", offset,
-        "sink=", has_mtk_sink and "mtkbtmwrpcaudiosink" or "aplay",
+        "sink=", player_cmd:match("bluealsa") and "bluealsa"
+            or (has_mtk_sink and "mtkbtmwrpcaudiosink" or "aplay"),
         "wav_out=", wav_out ~= "" and "yes" or "no",
         "cmd=", cmd:sub(1, 220))
 

@@ -1057,6 +1057,39 @@ function BTManager:startBluealsa()
         else
             logger.err("BTManager: bluealsa startup log not found at", ba_log)
         end
+
+        -- Retry with the firmware's own bluealsa when the bundled build
+        -- would not start.  Newer Kobo firmwares (4.38+) ship a bluealsa
+        -- binary for Nickel's own BT audio, guaranteed to match the
+        -- firmware's BlueZ; the bundled build may lag behind (issue #93).
+        local sys_bin = nil
+        local wh = io.popen("which bluealsa 2>/dev/null")
+        local wr = wh and wh:read("*l") or ""
+        if wh then wh:close() end
+        if wr ~= "" then
+            sys_bin = wr
+        else
+            for _, p in ipairs({"/usr/bin/bluealsa", "/bin/bluealsa", "/usr/local/bin/bluealsa"}) do
+                local sf = io.open(p, "r")
+                if sf then
+                    sf:close()
+                    sys_bin = p
+                    break
+                end
+            end
+        end
+        if sys_bin then
+            logger.warn("BTManager: bundled bluealsa failed, retrying with system binary:", sys_bin)
+            os.execute(string.format("%s --profile=a2dp-source 2>>%s &", sys_bin, ba_log))
+            for attempt = 1, 3 do
+                os.execute("sleep 2")
+                running = self:isBluealsaRunning()
+                if running then
+                    logger.warn("BTManager: system bluealsa ready after", attempt * 2, "s")
+                    break
+                end
+            end
+        end
     end
 
     logger.warn("BTManager: bluealsa started:", running)
@@ -1094,6 +1127,101 @@ function BTManager:getBluealsaPluginDir()
     local ba_dir = findBluealsaDir()
     if not ba_dir then return nil end
     return ba_dir .. "lib/alsa-lib"
+end
+
+--- Get the environment prefix that lets aplay use the BlueALSA PCM.
+-- ALSA_PLUGIN_DIR tells libasound where to find the bluealsa PCM plugin
+-- .so (the PCM type "bluealsa" is defined in /etc/asound.conf by
+-- startBluealsa); LD_LIBRARY_PATH resolves the plugin's own deps
+-- (libsbc, libglib, libdbus, libbluetooth) from the bundled libs.
+-- @treturn string env prefix with trailing space, or "" when the
+--   bluealsa plugin directory is unavailable
+function BTManager:getBluealsaEnv()
+    local plugin_dir = self:getBluealsaPluginDir()
+    if not plugin_dir then return "" end
+    local lib_dir = plugin_dir:gsub("/alsa%-lib$", "")
+    if lib_dir == plugin_dir then
+        return "ALSA_PLUGIN_DIR=" .. plugin_dir .. " "
+    end
+    return "LD_LIBRARY_PATH=" .. lib_dir .. " ALSA_PLUGIN_DIR=" .. plugin_dir .. " "
+end
+
+-----------------------------------------------------------------------
+-- Startup restore (Kobo BlueZ; issue #93)
+-----------------------------------------------------------------------
+
+--- Restore the BlueZ stack and the saved-device connection after
+-- KOReader entry.
+-- When KOReader is launched from Nickel, koreader.sh kills bluetoothd
+-- and bluealsa (and may power the BT chip down), and nickel.sh's
+-- restart path never brings them back -- so BT is dead inside KOReader
+-- and stays dead in Nickel until the next reboot.  When the user has a
+-- saved BT device, bring the stack back up and reconnect it.
+-- Must be called from a deferred callback: the reconnect probes sleep.
+-- When work is needed, a brief note is shown and the slow part is
+-- scheduled behind it, so the note renders before the multi-second
+-- daemon startup blocks the UI loop (same pattern as
+-- btui.btQuickConnect).  Unlike the manual connect flow, a failed
+-- reconnect leaves the stack powered: silently turning the user's BT
+-- off in the background would degrade their state (btui's power-off on
+-- failure protects against the standby death spiral, but there the
+-- user sees and chose the attempt).
+-- @treturn bool true when the stack is up and the saved device is
+--   connected, or when there was nothing to do (a scheduled restore
+--   also returns true; check the log for its outcome)
+function BTManager:restoreSavedDevice(plugin)
+    detectStack()
+    if bt_stack ~= "bluez" then return true end
+    if not (Device.isKobo and Device:isKobo()) then return true end
+    local addr = plugin and plugin.getSetting
+        and plugin:getSetting("bt_device_addr", nil)
+    if not addr then return true end
+
+    if is_bluetoothd_running() and self:isConnected(addr) then
+        -- Stack healthy, device connected (e.g. KSM launch, where
+        -- koreader.sh never touched BT).  Only bluealsa may need
+        -- starting, and ttsengine re-checks it lazily anyway.
+        if not self:isBluealsaRunning() and self:hasBluealsaBundled() then
+            self:startBluealsa()
+        end
+        return true
+    end
+
+    logger.warn("BTManager: restoring Bluetooth after KOReader startup",
+        "(bluetoothd running:", is_bluetoothd_running(),
+        "saved device connected:", self:isConnected(addr), ")")
+    local InfoMessage = require("ui/widget/infomessage")
+    local UIManager = require("ui/uimanager")
+    UIManager:show(InfoMessage:new{
+        text = _("Restoring Bluetooth connection…"),
+        timeout = 6,
+    })
+    UIManager:scheduleIn(0.3, function()
+        pcall(function()
+            -- powerOn() short-circuits to ~1s when the daemon and the
+            -- HCI adapter are already up, and does the full daemon
+            -- startup when koreader.sh killed them.
+            if not self:powerOn() then
+                logger.warn("BTManager: restore failed at power-on")
+                return
+            end
+            if not self:isConnected(addr) and not self:connect(addr) then
+                logger.warn("BTManager: restore could not reconnect", addr,
+                    "-- leaving the stack powered on")
+                return
+            end
+            -- Re-probe the TTS audio player so it picks up the bluealsa
+            -- route (mirrors btui.btQuickConnect).
+            local engine = plugin.tts_engine
+            if engine then
+                engine._cached_player = nil
+                engine._no_real_audio_output = false
+                engine.player_cmd = engine:findAudioPlayer()
+            end
+            logger.warn("BTManager: Bluetooth restored, saved device connected:", addr)
+        end)
+    end)
+    return true
 end
 
 -----------------------------------------------------------------------
