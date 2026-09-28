@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: audiobook.koplugin 0.1.17.40\n"
+"Project-Id-Version: audiobook.koplugin 0.2.8\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-08-13 11:00+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: _meta.lua:18 main.lua:528
+#: _meta.lua:18 main.lua:550
 msgid "Audiobook Read-Along"
 msgstr ""
 
@@ -98,11 +98,11 @@ msgstr ""
 msgid "Enter the URL of your Audiobookshelf server."
 msgstr ""
 
-#: absbrowse.lua:253 absbrowse.lua:331 absbrowse.lua:814 audiobookplayer.lua:1246 btui.lua:345 main.lua:1404 main.lua:1535 main.lua:2215
+#: absbrowse.lua:253 absbrowse.lua:331 absbrowse.lua:814 audiobookplayer.lua:1246 btui.lua:345 main.lua:1426 main.lua:1557 main.lua:2244
 msgid "Cancel"
 msgstr ""
 
-#: absbrowse.lua:259 menubuilder.lua:1458 menubuilder.lua:1493
+#: absbrowse.lua:259 menubuilder.lua:1618 menubuilder.lua:1653
 msgid "Save"
 msgstr ""
 
@@ -146,11 +146,11 @@ msgstr ""
 msgid "Login failed: "
 msgstr ""
 
-#: absbrowse.lua:374 absbrowse.lua:430 absbrowse.lua:557 absbrowse.lua:756 absbrowse.lua:1192 absbrowse.lua:1352 absbrowse.lua:1560 menubuilder.lua:1040
+#: absbrowse.lua:374 absbrowse.lua:430 absbrowse.lua:557 absbrowse.lua:756 absbrowse.lua:1192 absbrowse.lua:1361 absbrowse.lua:1582 menubuilder.lua:1129
 msgid "unknown error"
 msgstr ""
 
-#: absbrowse.lua:397 absbrowse.lua:1516
+#: absbrowse.lua:397 absbrowse.lua:1538
 msgid "Not connected to an Audiobookshelf server."
 msgstr ""
 
@@ -250,7 +250,7 @@ msgstr ""
 msgid "Search: %1 (%2)"
 msgstr ""
 
-#: absbrowse.lua:961 main.lua:1534
+#: absbrowse.lua:961 main.lua:1556
 msgid "Play"
 msgstr ""
 
@@ -274,17 +274,17 @@ msgstr ""
 msgid "No downloaded items."
 msgstr ""
 
-#: absbrowse.lua:1056 absbrowse.lua:1091 absbrowse.lua:1494
+#: absbrowse.lua:1056 absbrowse.lua:1091 absbrowse.lua:1516
 msgid ""
 "Delete %1 from device?\n"
 "This will remove the downloaded audio files."
 msgstr ""
 
-#: absbrowse.lua:1057 absbrowse.lua:1092 absbrowse.lua:1495
+#: absbrowse.lua:1057 absbrowse.lua:1092 absbrowse.lua:1517
 msgid "Delete"
 msgstr ""
 
-#: absbrowse.lua:1061 absbrowse.lua:1101 absbrowse.lua:1499
+#: absbrowse.lua:1061 absbrowse.lua:1101 absbrowse.lua:1521
 msgid "Item deleted."
 msgstr ""
 
@@ -292,7 +292,7 @@ msgstr ""
 msgid "Downloaded Items"
 msgstr ""
 
-#: absbrowse.lua:1091 absbrowse.lua:1491
+#: absbrowse.lua:1091 absbrowse.lua:1513
 msgid "this item"
 msgstr ""
 
@@ -300,7 +300,7 @@ msgstr ""
 msgid "Fetching details for %1…"
 msgstr ""
 
-#: absbrowse.lua:1181 absbrowse.lua:1244 absbrowse.lua:1283 absbrowse.lua:1328
+#: absbrowse.lua:1181 absbrowse.lua:1244 absbrowse.lua:1284 absbrowse.lua:1329
 msgid "item"
 msgstr ""
 
@@ -325,57 +325,57 @@ msgid ""
 "Preparing…"
 msgstr ""
 
-#: absbrowse.lua:1283
+#: absbrowse.lua:1284
 msgid "Downloaded: %1"
 msgstr ""
 
-#: absbrowse.lua:1316
+#: absbrowse.lua:1317
 msgid "Cannot download file %1: missing URL."
 msgstr ""
 
-#: absbrowse.lua:1327
+#: absbrowse.lua:1328
 msgid ""
 "Downloading %1…\n"
 "File %2 / %3"
 msgstr ""
 
-#: absbrowse.lua:1352
+#: absbrowse.lua:1361
 msgid "Download failed for file %1: %2"
 msgstr ""
 
-#: absbrowse.lua:1391
+#: absbrowse.lua:1400
 msgid "Playback unavailable. The media player failed to initialize. Please restart KOReader and, if the problem persists, generate a bug report."
 msgstr ""
 
-#: absbrowse.lua:1400
+#: absbrowse.lua:1409
 msgid "Item not found in cache."
 msgstr ""
 
-#: absbrowse.lua:1409
+#: absbrowse.lua:1418
 msgid "No audio file available for this item."
 msgstr ""
 
-#: absbrowse.lua:1419
+#: absbrowse.lua:1428
 msgid "Audio file missing. Please re-download."
 msgstr ""
 
-#: absbrowse.lua:1473
+#: absbrowse.lua:1495
 msgid "Playback not available."
 msgstr ""
 
-#: absbrowse.lua:1532
+#: absbrowse.lua:1554
 msgid "Could not load ABS modules."
 msgstr ""
 
-#: absbrowse.lua:1539
+#: absbrowse.lua:1561
 msgid "Syncing progress…"
 msgstr ""
 
-#: absbrowse.lua:1555
+#: absbrowse.lua:1577
 msgid "Progress synced successfully."
 msgstr ""
 
-#: absbrowse.lua:1560
+#: absbrowse.lua:1582
 msgid "Sync failed: "
 msgstr ""
 
@@ -463,11 +463,11 @@ msgstr ""
 msgid "BT"
 msgstr ""
 
-#: audiobookplayer.lua:278 audiobookplayer.lua:774 audiobookplayer.lua:1308 audiobookplayer.lua:1692 mediasync.lua:2467 mediasync.lua:2475 synccontroller.lua:1700
+#: audiobookplayer.lua:278 audiobookplayer.lua:774 audiobookplayer.lua:1308 audiobookplayer.lua:1692 mediasync.lua:2545 mediasync.lua:2553 synccontroller.lua:1701
 msgid "Audiobook"
 msgstr ""
 
-#: audiobookplayer.lua:938 mediasync.lua:2914 mediasync.lua:3013 mediasync.lua:3025 mediasync.lua:3127
+#: audiobookplayer.lua:938 mediasync.lua:2992 mediasync.lua:3091 mediasync.lua:3103 mediasync.lua:3205
 msgid "Could not open chapter list."
 msgstr ""
 
@@ -475,7 +475,7 @@ msgstr ""
 msgid "Playback speed"
 msgstr ""
 
-#: audiobookplayer.lua:1075 mediasync.lua:2982 menubuilder.lua:1693
+#: audiobookplayer.lua:1075 mediasync.lua:3060 menubuilder.lua:1854
 msgid "Close"
 msgstr ""
 
@@ -499,7 +499,7 @@ msgstr ""
 msgid "Keep"
 msgstr ""
 
-#: audiobookplayer.lua:1269 main.lua:963 main.lua:2694
+#: audiobookplayer.lua:1269 main.lua:985 main.lua:2762
 msgid "Sleep timer"
 msgstr ""
 
@@ -507,7 +507,7 @@ msgstr ""
 msgid "Select minutes."
 msgstr ""
 
-#: audiobookplayer.lua:1276 main.lua:1083 main.lua:2704 main.lua:2749
+#: audiobookplayer.lua:1276 main.lua:1105 main.lua:2772 main.lua:2817
 msgid "Set"
 msgstr ""
 
@@ -562,7 +562,11 @@ msgid ""
 "This one-time setup is needed because the Bluetooth firmware configuration is written by Nickel's startup process and is not preserved across KOReader-only reboots."
 msgstr ""
 
-#: btui.lua:24 main.lua:966
+#: btmanager.lua:1196
+msgid "Restoring Bluetooth connection…"
+msgstr ""
+
+#: btui.lua:24 main.lua:988
 msgid "Off"
 msgstr ""
 
@@ -780,518 +784,526 @@ msgid ""
 "This usually means temporary storage (/var) is full. Please reboot your Kindle and try again."
 msgstr ""
 
-#: downloader.lua:243
+#: downloader.lua:245
 msgid "Cannot open file for writing: "
 msgstr ""
 
-#: downloader.lua:265
+#: downloader.lua:267
 msgid "Download failed (network error)."
 msgstr ""
 
-#: downloader.lua:282
+#: downloader.lua:284
 msgid "Downloaded file is too small (server error)."
 msgstr ""
 
-#: downloader.lua:303
+#: downloader.lua:305
 msgid "Download failed (HTTP "
 msgstr ""
 
-#: downloader.lua:310
+#: downloader.lua:312
 msgid "Download failed: too many redirects."
 msgstr ""
 
-#: downloader.lua:324
+#: downloader.lua:326
 msgid ""
 "No download tool found.\n"
 "Install curl or wget on your device."
 msgstr ""
 
-#: downloader.lua:371
+#: downloader.lua:373
 msgid "Download failed (server or network error)."
 msgstr ""
 
-#: downloader.lua:395
+#: downloader.lua:397
 msgid "Download timed out after 10 minutes."
 msgstr ""
 
-#: downloader.lua:421
+#: downloader.lua:423
 msgid "Unknown archive format."
 msgstr ""
 
-#: downloader.lua:438
+#: downloader.lua:440
 msgid "Extraction failed."
 msgstr ""
 
-#: downloader.lua:442
+#: downloader.lua:444
 msgid "Could not run extractor."
 msgstr ""
 
-#: downloader.lua:462
+#: downloader.lua:464
 msgid "Unknown voice."
 msgstr ""
 
-#: downloader.lua:566
+#: downloader.lua:565
+msgid "Unknown file."
+msgstr ""
+
+#: downloader.lua:581
+msgid "Downloaded file has the wrong size. Please retry."
+msgstr ""
+
+#: downloader.lua:649
 msgid "Failed to fetch voice list (HTTP %1)"
 msgstr ""
 
-#: downloader.lua:574
+#: downloader.lua:657
 msgid "Failed to parse voice list."
 msgstr ""
 
-#: downloader.lua:651
+#: downloader.lua:734
 msgid "Unknown MBROLA voice."
 msgstr ""
 
-#: highlightmanager.lua:1026
+#: highlightmanager.lua:1076
 msgid "Invert (best for e-ink)"
 msgstr ""
 
-#: highlightmanager.lua:1027 main.lua:858 menubuilder.lua:809
+#: highlightmanager.lua:1077 main.lua:880 menubuilder.lua:856
 msgid "Underline"
 msgstr ""
 
-#: highlightmanager.lua:1028 main.lua:859
+#: highlightmanager.lua:1078 main.lua:881
 msgid "Box"
 msgstr ""
 
-#: highlightmanager.lua:1029 main.lua:857 main.lua:862
+#: highlightmanager.lua:1079 main.lua:879 main.lua:884
 msgid "Background"
 msgstr ""
 
-#: main.lua:167 main.lua:235 main.lua:1237
+#: main.lua:184 main.lua:252 main.lua:1259
 msgid "Read aloud from here"
 msgstr ""
 
-#: main.lua:195 main.lua:271 main.lua:1267
+#: main.lua:212 main.lua:288 main.lua:1289
 msgid "Play aligned audiobook from here"
 msgstr ""
 
-#: main.lua:469
+#: main.lua:491
 msgid "Toggle Read-Along"
 msgstr ""
 
-#: main.lua:475
+#: main.lua:497
 msgid "Stop Read-Along"
 msgstr ""
 
-#: main.lua:486
+#: main.lua:508
 msgid ""
 "Audiobook plugin failed to initialize.\n"
 "\n"
 msgstr ""
 
-#: main.lua:499
+#: main.lua:521
 msgid "Audiobook Read-Along (error)"
 msgstr ""
 
-#: main.lua:503
+#: main.lua:525
 msgid "Plugin failed to load"
 msgstr ""
 
-#: main.lua:510 main.lua:1119
+#: main.lua:532 main.lua:1141
 msgid "Generate bug report"
 msgstr ""
 
-#: main.lua:516
+#: main.lua:538
 msgid ""
 "Bug report module failed to load.\n"
 "\n"
 "Run generate-report.sh via SSH or the terminal emulator instead."
 msgstr ""
 
-#: main.lua:533
+#: main.lua:555
 msgid "Start Text-to-Speech from current page"
 msgstr ""
 
-#: main.lua:543 main.lua:1666 main.lua:1684
+#: main.lua:565 main.lua:1688 main.lua:1706
 msgid "Play aligned/enriched audiobook"
 msgstr ""
 
-#: main.lua:554
+#: main.lua:576
 msgid "Start music playlist"
 msgstr ""
 
-#: main.lua:564
+#: main.lua:586
 msgid "Play unaligned audiobook"
 msgstr ""
 
-#: main.lua:579
+#: main.lua:601
 msgid "Audiobookshelf"
 msgstr ""
 
-#: main.lua:589
+#: main.lua:611
 msgid "Bluetooth settings"
 msgstr ""
 
-#: main.lua:600
+#: main.lua:622
 msgid "Headset media buttons"
 msgstr ""
 
-#: main.lua:612
+#: main.lua:634
 msgid ""
 "When enabled, play/pause/next/prev buttons on a Bluetooth headset or speaker will control playback. The connected device will also show playback status.\n"
 "\n"
 "On Kindle, stem clicks are read from Lab126 LIPC (playermgr / audiomgrd) because this firmware has no AVRCP evdev node."
 msgstr ""
 
-#: main.lua:615
+#: main.lua:637
 msgid "Reconnect BT on track change"
 msgstr ""
 
-#: main.lua:625
+#: main.lua:647
 msgid "Kindle + AirPods: when enabled, each playlist/Storyteller audio-file boundary runs a Bluetooth Disconnect→Connect cycle before the next file starts (~5–10 s gap). Off by default; the plugin still keeps a silent A2DP keepalive across the gap. Turn this on only if audio goes silent at chapter/chunk transitions."
 msgstr ""
 
-#: main.lua:631
+#: main.lua:653
 msgid "Disconnect alert: off"
 msgstr ""
 
-#: main.lua:633
+#: main.lua:655
 msgid "Disconnect alert: %1s"
 msgstr ""
 
-#: main.lua:644
+#: main.lua:666
 msgid "Voice settings"
 msgstr ""
 
-#: main.lua:645
+#: main.lua:667
 msgid "Voice settings (N/A)"
 msgstr ""
 
-#: main.lua:648
+#: main.lua:670
 msgid "Voice settings (Piper - %1)"
 msgstr ""
 
-#: main.lua:655
+#: main.lua:677
 msgid "Voice settings (%1)"
 msgstr ""
 
-#: main.lua:664
+#: main.lua:686
 msgid "General settings"
 msgstr ""
 
-#: main.lua:667
+#: main.lua:689
 msgid "Session recorder settings"
 msgstr ""
 
-#: main.lua:672
+#: main.lua:694
 msgid "Video FPS: %1"
 msgstr ""
 
-#: main.lua:679
+#: main.lua:701
 msgid "Frames per second for the video capture. Higher values use more CPU and storage."
 msgstr ""
 
-#: main.lua:684
+#: main.lua:706
 msgid "Video scale: %1"
 msgstr ""
 
-#: main.lua:692
+#: main.lua:714
 msgid "Resolution scaling for the video. Lower values reduce file size and CPU load."
 msgstr ""
 
-#: main.lua:697
+#: main.lua:719
 msgid "Video quality: %1"
 msgstr ""
 
-#: main.lua:706
+#: main.lua:728
 msgid "MJPEG quality (2 = best, 31 = worst). Lower values produce larger files."
 msgstr ""
 
-#: main.lua:709
+#: main.lua:731
 msgid "Include audio in video file"
 msgstr ""
 
-#: main.lua:719
+#: main.lua:741
 msgid "When enabled, the recorder tries to mux ALSA audio into the video file in real time. This requires a working ALSA capture device and fails on most e-ink devices, so it is disabled."
 msgstr ""
 
-#: main.lua:722
+#: main.lua:744
 msgid "Save separate audio files"
 msgstr ""
 
-#: main.lua:729
+#: main.lua:751
 msgid "When enabled, TTS and playback audio are saved as WAV files in the audio/ folder. When disabled, only the video file is kept."
 msgstr ""
 
-#: main.lua:734
+#: main.lua:756
 msgid "Screenshot max interval: %1s"
 msgstr ""
 
-#: main.lua:742
+#: main.lua:764
 msgid "Maximum time between forced screenshot frames when the screen is static."
 msgstr ""
 
-#: main.lua:749
+#: main.lua:771
 msgid "Audio output (PocketBook): N/A"
 msgstr ""
 
-#: main.lua:754
+#: main.lua:776
 msgid "PocketBook pipeline"
 msgstr ""
 
-#: main.lua:755
+#: main.lua:777
 msgid "Auto"
 msgstr ""
 
-#: main.lua:757
+#: main.lua:779
 msgid "Audio output (PocketBook): %1"
 msgstr ""
 
-#: main.lua:765
+#: main.lua:787
 msgid "PocketBook devices route audio through different paths depending on firmware. The default works on most devices. Change this only if you hear no sound, distorted sound, or playback at 2-3x speed (known issue on PB631). Each option in the submenu has its own help text describing what to try."
 msgstr ""
 
-#: main.lua:768
+#: main.lua:790
 msgid "Allow speaker playback without Bluetooth"
 msgstr ""
 
-#: main.lua:778
+#: main.lua:800
 msgid "By default, PocketBooks with a Bluetooth adapter only play through Bluetooth audio, because direct hardware access can damage the amplifier. This toggle lifts the Bluetooth requirement ONLY for daemon-routed devices (tts_sm, hwout_mix), which go through the PocketBook audio daemon like the system's own TTS and never touch the hardware directly. Direct-hardware choices (plughw:0) remain blocked without Bluetooth. Use at your own risk."
 msgstr ""
 
-#: main.lua:783
+#: main.lua:805
 msgid "Android: persistent audio stream (auto-enabled)"
 msgstr ""
 
-#: main.lua:785
+#: main.lua:807
 msgid "Android: persistent audio stream"
 msgstr ""
 
-#: main.lua:797
+#: main.lua:819
 msgid "Workaround for Android devices where read-aloud audio cuts off mid-sentence and stalls (seen on some MTK e-readers). Plays synthesized audio through one persistent, continuously-fed audio track instead of a fresh media player per sentence. Leave this off for neural engines such as SherpaTTS: the persistent stream adds hiss and pitch artifacts. Off by default; the plugin also switches to it automatically for the rest of the session when it detects a stalled clip, except on neural engines. Takes effect from the next sentence."
 msgstr ""
 
-#: main.lua:800
+#: main.lua:822
 msgid "Keep playing when lid is closed"
 msgstr ""
 
-#: main.lua:807
+#: main.lua:829
 msgid "When enabled, closing the case/cover will not stop audio playback. When disabled (default), playback pauses on lid close and resumes when reopened. Disabling prevents device crashes caused by audio processes running during hardware suspend."
 msgstr ""
 
-#: main.lua:810
+#: main.lua:832
 msgid "Pause reading when a menu opens"
 msgstr ""
 
-#: main.lua:817
+#: main.lua:839
 msgid "When enabled (default), read-aloud pauses while a KOReader menu or dialog is open and resumes when it closes. When disabled, narration keeps playing while you browse menus; only the sentence highlighting pauses."
 msgstr ""
 
-#: main.lua:820
+#: main.lua:842
 msgid "Hide control bar while playing (experimental)"
 msgstr ""
 
-#: main.lua:833
+#: main.lua:855
 msgid "Experimental: when enabled, the playback control bar disappears while TTS is playing so the bottom of the page is fully visible for read-along. Pause playback (via tap-to-pause overlay or BT headset button) to bring the bar back."
 msgstr ""
 
-#: main.lua:836
+#: main.lua:858
 msgid "Hide progress bar during read-along"
 msgstr ""
 
-#: main.lua:852
+#: main.lua:874
 msgid "When enabled, the progress bar row is left out of the control bar during TTS read-along, making the bar one row shorter and leaving more of the page visible. The sentence highlight already shows how far along the page you are. The progress bar is always shown for audiobook playback, where it doubles as the seek control."
 msgstr ""
 
-#: main.lua:860
+#: main.lua:882
 msgid "Invert"
 msgstr ""
 
-#: main.lua:862
+#: main.lua:884
 msgid "Highlight style: %1"
 msgstr ""
 
-#: main.lua:870
+#: main.lua:892
 msgid "Auto-advance pages"
 msgstr ""
 
-#: main.lua:880
+#: main.lua:902
 msgid "Highlight sentences"
 msgstr ""
 
-#: main.lua:890
+#: main.lua:912
 msgid "Follow narration page (aligned)"
 msgstr ""
 
-#: main.lua:898
+#: main.lua:920
 msgid "When enabled (default), the book view auto-turns to keep the current narration sentence on screen while you stay with the read-aloud. Manually turning a page never seeks or restarts audio: highlighting pauses and a “Return to read-aloud” cue appears until you jump back or the narration catches up."
 msgstr ""
 
-#: main.lua:901
+#: main.lua:923
 msgid "Keep the audiobook bar"
 msgstr ""
 
-#: main.lua:925
+#: main.lua:947
 msgid "When enabled, the mini audiobook bar stays on screen after you stop narration. When disabled (default), the bar hides when idle."
 msgstr ""
 
-#: main.lua:928
+#: main.lua:950
 msgid "Lock KOReader page margins"
 msgstr ""
 
-#: main.lua:949
+#: main.lua:971
 msgid "When enabled, the plugin writes this book’s bottom page margin into KOReader’s own settings before CRE typesets. The next open rebuilds the layout once (text stays above the audiobook bar); after that, KOReader reuses that layout. Disable to restore your original margins and edit them with KOReader’s usual controls."
 msgstr ""
 
-#: main.lua:952
+#: main.lua:974
 msgid "Keep status bars during read-aloud"
 msgstr ""
 
-#: main.lua:960
+#: main.lua:982
 msgid "When enabled, the minimized read-aloud mini player sits above KOReader’s bottom status bar / progress bar (alt status bar at the top is unchanged). The page always reflows so book text ends above the mini player — the player never covers readable text. When disabled (default), the mini player sits at the bottom of the screen (may cover the status bar) but text is still reflowed above it."
 msgstr ""
 
-#: main.lua:976
+#: main.lua:998
 msgid "15 min"
 msgstr ""
 
-#: main.lua:986
+#: main.lua:1008
 msgid "30 min"
 msgstr ""
 
-#: main.lua:996
+#: main.lua:1018
 msgid "45 min"
 msgstr ""
 
-#: main.lua:1006
+#: main.lua:1028
 msgid "60 min"
 msgstr ""
 
-#: main.lua:1016
+#: main.lua:1038
 msgid "1 hour"
 msgstr ""
 
-#: main.lua:1026
+#: main.lua:1048
 msgid "2 hours"
 msgstr ""
 
-#: main.lua:1036
+#: main.lua:1058
 msgid "3 hours"
 msgstr ""
 
-#: main.lua:1046
+#: main.lua:1068
 msgid "Custom..."
 msgstr ""
 
-#: main.lua:1053
+#: main.lua:1075
 msgid "Automatically pause playback after the selected time. Useful for listening before sleep."
 msgstr ""
 
-#: main.lua:1056
+#: main.lua:1078
 msgid "Put device to sleep when timer ends"
 msgstr ""
 
-#: main.lua:1063
+#: main.lua:1085
 msgid "When enabled, the device will suspend after the sleep timer stops playback."
 msgstr ""
 
-#: main.lua:1068
+#: main.lua:1090
 msgid "Overlay sync offset: %1 s"
 msgstr ""
 
-#: main.lua:1075
+#: main.lua:1097
 msgid "Overlay sync offset"
 msgstr ""
 
-#: main.lua:1076
+#: main.lua:1098
 msgid "Positive values delay the highlight (use when the highlight runs ahead of the narration); negative values advance it."
 msgstr ""
 
-#: main.lua:1090
+#: main.lua:1112
 msgid "Shifts EPUB Media Overlay sentence highlighting relative to the audio. Some audiobooks (e.g. with publisher intros) have timing tables offset from the embedded audio."
 msgstr ""
 
-#: main.lua:1098
+#: main.lua:1120
 msgid "Stop session recorder"
 msgstr ""
 
-#: main.lua:1100
+#: main.lua:1122
 msgid "Start session recorder"
 msgstr ""
 
-#: main.lua:1116
+#: main.lua:1138
 msgid "Records the current audiobook or TTS session. Audio, video/screenshots, and optional touch events are saved to a folder on device storage."
 msgstr ""
 
-#: main.lua:1123
+#: main.lua:1145
 msgid "Saves a diagnostic report to your device storage. The report contains device model, TTS engine status, and audio configuration — no personal data or book content. Share it when reporting issues on GitHub."
 msgstr ""
 
-#: main.lua:1126
+#: main.lua:1148
 msgid "Run device benchmark"
 msgstr ""
 
-#: main.lua:1136
+#: main.lua:1158
 msgid "Runs a standardized TTS benchmark on test sentences using each available engine (espeak-ng, Piper). Saves a report you can share on GitHub to help document device performance. Piper tests may take several minutes on slow devices."
 msgstr ""
 
-#: main.lua:1139
+#: main.lua:1161
 msgid "Check for updates"
 msgstr ""
 
-#: main.lua:1150
+#: main.lua:1172
 msgid "Could not load updater module."
 msgstr ""
 
-#: main.lua:1158
+#: main.lua:1180
 msgid "Checks GitHub for a newer release. If an update is available, downloads and installs it. Requires Wi-Fi."
 msgstr ""
 
-#: main.lua:1161
+#: main.lua:1183
 msgid "About / Debug info"
 msgstr ""
 
-#: main.lua:1167
+#: main.lua:1189
 msgid "Plugin: Audiobook Read-Along %1"
 msgstr ""
 
-#: main.lua:1181
+#: main.lua:1203
 msgid "KOReader: %1"
 msgstr ""
 
-#: main.lua:1187
+#: main.lua:1209
 msgid "Device: %1 (%2)"
 msgstr ""
 
-#: main.lua:1200
+#: main.lua:1222
 msgid "TTS backend: %1"
 msgstr ""
 
-#: main.lua:1207
+#: main.lua:1229
 msgid "Audio player: %1"
 msgstr ""
 
-#: main.lua:1210
+#: main.lua:1232
 msgid "Plugin path: %1"
 msgstr ""
 
-#: main.lua:1216
+#: main.lua:1238
 msgid "Shows plugin version, KOReader version, device model, active TTS backend, and audio player. Useful when reporting issues."
 msgstr ""
 
-#: main.lua:1288
+#: main.lua:1310
 msgid ""
 "Could not extract text from this page.\n"
 "\n"
 "The document format may not be fully supported."
 msgstr ""
 
-#: main.lua:1340
+#: main.lua:1362
 msgid ""
 "No TTS engine found.\n"
 "\n"
 "Please install espeak-ng."
 msgstr ""
 
-#: main.lua:1374
+#: main.lua:1396
 msgid ""
 "Piper TTS is selected, but this Kindle model cannot play WAV files.\n"
 "\n"
 "Audio will use the built-in Kindle voice instead. Word highlighting may be slightly less precise."
 msgstr ""
 
-#: main.lua:1395
+#: main.lua:1417
 msgid ""
 "No audio output available.\n"
 "\n"
@@ -1304,29 +1316,29 @@ msgid ""
 "If it still fails, generate a bug report (Audiobook > Generate bug report) and share it on the GitHub issue."
 msgstr ""
 
-#: main.lua:1402
+#: main.lua:1424
 msgid ""
 "No audio output device found.\n"
 "\n"
 "TTS synthesis will run but audio may not play. Start anyway?"
 msgstr ""
 
-#: main.lua:1403
+#: main.lua:1425
 msgid "Start"
 msgstr ""
 
-#: main.lua:1487
+#: main.lua:1509
 msgid ""
 "No Bluetooth audio device connected.\n"
 "\n"
 "Reconnecting your headphones… once connected, try again."
 msgstr ""
 
-#: main.lua:1516 main.lua:3050
+#: main.lua:1538 main.lua:3118
 msgid "No document is currently open."
 msgstr ""
 
-#: main.lua:1533
+#: main.lua:1555
 msgid ""
 "No embedded narration found for this book.\n"
 "\n"
@@ -1336,249 +1348,253 @@ msgid ""
 "Play it?"
 msgstr ""
 
-#: main.lua:1545
+#: main.lua:1567
 msgid ""
 "This book has no embedded narration.\n"
 "\n"
 "Place an audiobook file with the same name in the same folder, or use Play unaligned audiobook to play a separate file."
 msgstr ""
 
-#: main.lua:1594
+#: main.lua:1616
 msgid "Select a book"
 msgstr ""
 
-#: main.lua:1609
+#: main.lua:1631
 msgid "Unsupported file type for aligned audiobook: %1"
 msgstr ""
 
-#: main.lua:1629
+#: main.lua:1651
 msgid "Could not open the book: %1"
 msgstr ""
 
-#: main.lua:1656
+#: main.lua:1678
 msgid "This book has no built-in audiobook. Use Play unaligned audiobook or Start music playlist to play a separate audio file."
 msgstr ""
 
-#: main.lua:1718
+#: main.lua:1740
 msgid ""
 "Loading the built-in audiobook…\n"
 "%1 / %2"
 msgstr ""
 
-#: main.lua:1723
+#: main.lua:1745
 msgid "Built-in audiobook ready"
 msgstr ""
 
-#: main.lua:1778 main.lua:3081
+#: main.lua:1800 main.lua:3149
 msgid "Could not load the built-in audiobook."
 msgstr ""
 
-#: main.lua:1785 main.lua:3111
+#: main.lua:1807 main.lua:3179
 msgid "Loading the built-in audiobook…"
 msgstr ""
 
-#: main.lua:1811 main.lua:3058 main.lua:3133
+#: main.lua:1833 main.lua:3126 main.lua:3201
 msgid "This book has no built-in audiobook."
 msgstr ""
 
-#: main.lua:1845
+#: main.lua:1867
 msgid "Could not find the built-in audiobook audio."
 msgstr ""
 
-#: main.lua:2107 main.lua:2128
+#: main.lua:2129 main.lua:2150
 msgid "Select audio file"
 msgstr ""
 
-#: main.lua:2164
+#: main.lua:2186
 msgid ""
 "No audio files found in\n"
 "%1"
 msgstr ""
 
-#: main.lua:2193 main.lua:2609 main.lua:4698
+#: main.lua:2222 main.lua:2677 main.lua:4863
 msgid "Unknown book"
 msgstr ""
 
-#: main.lua:2203 main.lua:4701
+#: main.lua:2232 main.lua:4866
 msgid "Resume from %1?"
 msgstr ""
 
-#: main.lua:2205 main.lua:2613 main.lua:4703
+#: main.lua:2234 main.lua:2681 main.lua:4868
 msgid "Book: %1"
 msgstr ""
 
-#: main.lua:2208 main.lua:2616 main.lua:4706
+#: main.lua:2237 main.lua:2684 main.lua:4871
 msgid "Chapter: %1"
 msgstr ""
 
-#: main.lua:2211 main.lua:2620 main.lua:4709
+#: main.lua:2240 main.lua:2688 main.lua:4883
 msgid "Last played: %1"
 msgstr ""
 
-#: main.lua:2214 main.lua:2634 main.lua:4712
+#: main.lua:2243 main.lua:2702 main.lua:4886
 msgid "Resume"
 msgstr ""
 
-#: main.lua:2222 main.lua:2649 main.lua:4720
+#: main.lua:2251 main.lua:2717 main.lua:4894
 msgid "From start"
 msgstr ""
 
-#: main.lua:2250
+#: main.lua:2279
 msgid ""
 "Transcoding to MP3...\n"
 "This may take a minute."
 msgstr ""
 
-#: main.lua:2270
+#: main.lua:2299
 msgid "Transcoding failed: "
 msgstr ""
 
-#: main.lua:2326
+#: main.lua:2394
 msgid "Audio playback"
 msgstr ""
 
-#: main.lua:2597
+#: main.lua:2665
 msgid "Resumed from %1"
 msgstr ""
 
-#: main.lua:2607
+#: main.lua:2675
 msgid "Start from current page"
 msgstr ""
 
-#: main.lua:2611
+#: main.lua:2679
 msgid "Continue listening from %1?"
 msgstr ""
 
-#: main.lua:2670
+#: main.lua:2738
 msgid "%1 h"
 msgstr ""
 
-#: main.lua:2672
+#: main.lua:2740
 msgid "%1 h %2 min"
 msgstr ""
 
-#: main.lua:2675
+#: main.lua:2743
 msgid "%1 min"
 msgstr ""
 
-#: main.lua:2678
+#: main.lua:2746
 msgid "Sleep timer set: %1"
 msgstr ""
 
-#: main.lua:2695
+#: main.lua:2763
 msgid "Select hours and minutes."
 msgstr ""
 
-#: main.lua:2732
+#: main.lua:2800
 msgid "Sleep timer: hours"
 msgstr ""
 
-#: main.lua:2733
+#: main.lua:2801
 msgid "Select the number of hours."
 msgstr ""
 
-#: main.lua:2739 mediasync.lua:2986 menubuilder.lua:1697
+#: main.lua:2807 mediasync.lua:3064 menubuilder.lua:1858
 msgid "Next"
 msgstr ""
 
-#: main.lua:2742
+#: main.lua:2810
 msgid "Sleep timer: minutes"
 msgstr ""
 
-#: main.lua:2743
+#: main.lua:2811
 msgid "Select the number of minutes."
 msgstr ""
 
-#: main.lua:2811
+#: main.lua:2879
 msgid "Sleep timer: playback paused."
 msgstr ""
 
-#: main.lua:3175
+#: main.lua:3243
 msgid ""
 "\n"
 "\n"
 "This book has embedded narration — use \"Play aligned audiobook from here\" instead."
 msgstr ""
 
-#: main.lua:3178 menubuilder.lua:1903 menubuilder.lua:1963
+#: main.lua:3246 menubuilder.lua:2064 menubuilder.lua:2124
 msgid "TTS engine is not available."
 msgstr ""
 
-#: main.lua:3203
+#: main.lua:3271
 msgid ""
 "\n"
 "\n"
 "For this read-aloud EPUB, use \"Play aligned audiobook from here\"."
 msgstr ""
 
-#: main.lua:3206
+#: main.lua:3274
 msgid "Could not retrieve page text for TTS."
 msgstr ""
 
-#: main.lua:4638
+#: main.lua:4714
 msgid "Audiobookshelf modules not available."
 msgstr ""
 
-#: mediaengine.lua:603
+#: main.lua:4879
+msgid "File: %1"
+msgstr ""
+
+#: mediaengine.lua:609
 msgid ""
 "Android audio playback is unavailable.\n"
 "\n"
 "Could not initialize the system MediaPlayer. Restart KOReader and try again."
 msgstr ""
 
-#: mediaengine.lua:2405
+#: mediaengine.lua:2458
 msgid "Cannot play this audio file. Kindle's GStreamer can only play raw PCM WAV files; MP3/M4B/AAC files need the bundled ffmpeg decoder. Please install the release .zip (not 'Source code') from GitHub so plugins/audiobook.koplugin/bin/ffmpeg is present."
 msgstr ""
 
-#: mediasync.lua:1681
+#: mediasync.lua:1753
 msgid "Loop disabled."
 msgstr ""
 
-#: mediasync.lua:1681
+#: mediasync.lua:1753
 msgid "Loop enabled."
 msgstr ""
 
-#: mediasync.lua:1733
+#: mediasync.lua:1805
 msgid "Playlist shuffled."
 msgstr ""
 
-#: mediasync.lua:1733
+#: mediasync.lua:1805
 msgid "Shuffle disabled."
 msgstr ""
 
-#: mediasync.lua:2427
+#: mediasync.lua:2505
 msgid "Audio playback failed: "
 msgstr ""
 
-#: mediasync.lua:2903 mediasync.lua:3048 mediasync.lua:3076 mediasync.lua:3088 synccontroller.lua:3212
+#: mediasync.lua:2981 mediasync.lua:3126 mediasync.lua:3154 mediasync.lua:3166 synccontroller.lua:3226
 msgid "No chapters available."
 msgstr ""
 
-#: mediasync.lua:2950 menubuilder.lua:1658
+#: mediasync.lua:3028 menubuilder.lua:1819
 msgid "Item"
 msgstr ""
 
-#: mediasync.lua:2973 menubuilder.lua:1684
+#: mediasync.lua:3051 menubuilder.lua:1845
 msgid "Prev"
 msgstr ""
 
-#: mediasync.lua:2997 mediasync.lua:3066 mediasync.lua:3121 synccontroller.lua:3239
+#: mediasync.lua:3075 mediasync.lua:3144 mediasync.lua:3199 synccontroller.lua:3253
 msgid "Chapters"
 msgstr ""
 
-#: mediasync.lua:3058 mediasync.lua:3112 synccontroller.lua:3226
+#: mediasync.lua:3136 mediasync.lua:3190 synccontroller.lua:3240
 msgid "Chapter"
 msgstr ""
 
-#: mediasync.lua:3224
+#: mediasync.lua:3302
 msgid "Playlist"
 msgstr ""
 
-#: menubuilder.lua:41 synccontroller.lua:2578
+#: menubuilder.lua:41 synccontroller.lua:2579
 msgid "System TTS (%1)"
 msgstr ""
 
-#: menubuilder.lua:43 synccontroller.lua:2580
+#: menubuilder.lua:43 synccontroller.lua:2581
 msgid "System TTS"
 msgstr ""
 
@@ -1602,15 +1618,15 @@ msgstr ""
 msgid "sanoTTS (neural)"
 msgstr ""
 
-#: menubuilder.lua:68 menubuilder.lua:882 ttsengine.lua:1502
+#: menubuilder.lua:68 menubuilder.lua:938 ttsengine.lua:1574
 msgid "Pico TTS"
 msgstr ""
 
-#: menubuilder.lua:69 menubuilder.lua:885
+#: menubuilder.lua:69 menubuilder.lua:941
 msgid "Flite"
 msgstr ""
 
-#: menubuilder.lua:70 menubuilder.lua:888
+#: menubuilder.lua:70 menubuilder.lua:944
 msgid "Festival"
 msgstr ""
 
@@ -1630,7 +1646,7 @@ msgstr ""
 msgid "MBROLA voice UK English Male 1"
 msgstr ""
 
-#: menubuilder.lua:118 menubuilder.lua:1153
+#: menubuilder.lua:118 menubuilder.lua:1313
 msgid "MBROLA disabled. Using regular espeak-ng voice."
 msgstr ""
 
@@ -1673,11 +1689,11 @@ msgstr ""
 msgid "Limits synthesis chunks to about 150 characters instead of 300. Reduces the wait per sentence and avoids synthesis failures with long sentences on low-memory devices. Applies from the next page."
 msgstr ""
 
-#: menubuilder.lua:236 menubuilder.lua:240 menubuilder.lua:242 menubuilder.lua:394 menubuilder.lua:1983
+#: menubuilder.lua:236 menubuilder.lua:240 menubuilder.lua:242 menubuilder.lua:415 menubuilder.lua:2144
 msgid "Voice: %1"
 msgstr ""
 
-#: menubuilder.lua:240 menubuilder.lua:1746 menubuilder.lua:1974
+#: menubuilder.lua:240 menubuilder.lua:1907 menubuilder.lua:2135
 msgid "Auto-detect"
 msgstr ""
 
@@ -1685,7 +1701,7 @@ msgstr ""
 msgid "Pick a language from the HuggingFace catalog, or an installed Android TTS voice. Neural voices on Android come from the system TTS engine (Google, SherpaTTS, …)."
 msgstr ""
 
-#: menubuilder.lua:261 menubuilder.lua:1989 menubuilder.lua:2004
+#: menubuilder.lua:261 menubuilder.lua:2150 menubuilder.lua:2165
 msgid "Speech rate: %1x"
 msgstr ""
 
@@ -1693,23 +1709,23 @@ msgstr ""
 msgid "Pitch: %1"
 msgstr ""
 
-#: menubuilder.lua:279 menubuilder.lua:2074 menubuilder.lua:2089
+#: menubuilder.lua:279 menubuilder.lua:2235 menubuilder.lua:2250
 msgid "Volume: %1%%"
 msgstr ""
 
-#: menubuilder.lua:289 menubuilder.lua:2043 menubuilder.lua:2051
+#: menubuilder.lua:289 menubuilder.lua:2204 menubuilder.lua:2212
 msgid "Sentence pause (. ? !): %1s"
 msgstr ""
 
-#: menubuilder.lua:296 menubuilder.lua:2058 menubuilder.lua:2066
+#: menubuilder.lua:296 menubuilder.lua:2219 menubuilder.lua:2227
 msgid "Paragraph pause (newlines): %1s"
 msgstr ""
 
-#: menubuilder.lua:306 menubuilder.lua:2012 menubuilder.lua:2020
+#: menubuilder.lua:306 menubuilder.lua:2173 menubuilder.lua:2181
 msgid "Sentence gap (. ? !): %1s"
 msgstr ""
 
-#: menubuilder.lua:313 menubuilder.lua:2027 menubuilder.lua:2035
+#: menubuilder.lua:313 menubuilder.lua:2188 menubuilder.lua:2196
 msgid "Paragraph gap (newlines): %1s"
 msgstr ""
 
@@ -1737,694 +1753,753 @@ msgstr ""
 msgid "Could not load voice download menu."
 msgstr ""
 
-#: menubuilder.lua:392
-msgid "Voice: (disabled while MBROLA is on)"
+#: menubuilder.lua:389
+msgid "sanoTTS voice: %1"
 msgstr ""
 
-#: menubuilder.lua:400
-msgid "Base voice and accent variant are ignored when a MBROLA voice is active. Disable MBROLA to use regular espeak-ng voices."
+#: menubuilder.lua:397
+msgid "Voice: Japanese (sanoTTS-jp)"
+msgstr ""
+
+#: menubuilder.lua:399
+msgid "The rate slider has no effect on this voice: the Japanese core has no speed control yet. Weights and dictionary are your own downloads from sanoTTS-jp and carry their own usage terms."
 msgstr ""
 
 #: menubuilder.lua:413
+msgid "Voice: (disabled while MBROLA is on)"
+msgstr ""
+
+#: menubuilder.lua:421
+msgid "Base voice and accent variant are ignored when a MBROLA voice is active. Disable MBROLA to use regular espeak-ng voices."
+msgstr ""
+
+#: menubuilder.lua:433
+msgid "Download sanoTTS-jp files…"
+msgstr ""
+
+#: menubuilder.lua:445
+msgid "Could not load the download menu."
+msgstr ""
+
+#: menubuilder.lua:459
 msgid "PocketBook pipeline - tts_sm (recommended)"
 msgstr ""
 
-#: menubuilder.lua:414
+#: menubuilder.lua:460
 msgid "Routes through the PocketBook audio daemon (softvol, dmix, resampling). Best compatibility on devices that expose tts_sm in /etc/asound.conf."
 msgstr ""
 
-#: menubuilder.lua:415
+#: menubuilder.lua:461
 msgid "Direct hardware with resampling - plughw:0"
 msgstr ""
 
-#: menubuilder.lua:416
+#: menubuilder.lua:462
 msgid "Direct hardware access through the ALSA plug layer. On some PocketBooks (e.g. PB631) the plug layer does not actually resample; if you hear playback at 2-3x speed, switch back to tts_sm or Auto."
 msgstr ""
 
-#: menubuilder.lua:417
+#: menubuilder.lua:463
 msgid "Auto (default ALSA device)"
 msgstr ""
 
-#: menubuilder.lua:418
+#: menubuilder.lua:464
 msgid "Uses the system default ALSA device, then falls back to tts_sm and plughw:0 if the default is unavailable."
 msgstr ""
 
-#: menubuilder.lua:419
+#: menubuilder.lua:465
 msgid "System player (InkView) - experimental"
 msgstr ""
 
-#: menubuilder.lua:420
+#: menubuilder.lua:466
 msgid "Uses the PocketBook InkView PlayFile API. Some firmwares (PB740, PB631) export PlayFile but do not actually play audio; if no sound comes out, switch back to tts_sm or Auto."
 msgstr ""
 
-#: menubuilder.lua:428
+#: menubuilder.lua:474
 msgid "PocketBook pipeline (direct dmix) - hwout_mix"
 msgstr ""
 
-#: menubuilder.lua:429
+#: menubuilder.lua:475
 msgid "Routes to the same PocketBook audio daemon output as tts_sm but skips the softvol layers that crash on some firmwares. Try this if tts_sm produces no sound or playback stops with an error. Loses the system TTS volume control."
 msgstr ""
 
-#: menubuilder.lua:476
+#: menubuilder.lua:522
 msgid "0 (very low)"
 msgstr ""
 
-#: menubuilder.lua:478
+#: menubuilder.lua:524
 msgid "50 (default)"
 msgstr ""
 
-#: menubuilder.lua:480
+#: menubuilder.lua:526
 msgid "99 (very high)"
 msgstr ""
 
-#: menubuilder.lua:522 menubuilder.lua:542 menubuilder.lua:564 menubuilder.lua:584
+#: menubuilder.lua:568 menubuilder.lua:588 menubuilder.lua:610 menubuilder.lua:630
 msgid " (default)"
 msgstr ""
 
-#: menubuilder.lua:605
+#: menubuilder.lua:651
 msgid " (default / off)"
 msgstr ""
 
-#: menubuilder.lua:625
+#: menubuilder.lua:671
 msgid "0 (no extra gap)"
 msgstr ""
 
-#: menubuilder.lua:626
+#: menubuilder.lua:672
 msgid "1 (10ms)"
 msgstr ""
 
-#: menubuilder.lua:627
+#: menubuilder.lua:673
 msgid "2 (20ms - default)"
 msgstr ""
 
-#: menubuilder.lua:628
+#: menubuilder.lua:674
 msgid "5 (50ms)"
 msgstr ""
 
-#: menubuilder.lua:629
+#: menubuilder.lua:675
 msgid "10 (100ms)"
 msgstr ""
 
-#: menubuilder.lua:630
+#: menubuilder.lua:676
 msgid "20 (200ms)"
 msgstr ""
 
-#: menubuilder.lua:631
+#: menubuilder.lua:677
 msgid "50 (500ms)"
 msgstr ""
 
-#: menubuilder.lua:661
+#: menubuilder.lua:707
 msgid "English (GB)"
 msgstr ""
 
-#: menubuilder.lua:662 menubuilder.lua:1517
+#: menubuilder.lua:708 menubuilder.lua:1677
 msgid "English (US)"
 msgstr ""
 
-#: menubuilder.lua:663
+#: menubuilder.lua:709
 msgid "English (Received Pronunciation)"
 msgstr ""
 
-#: menubuilder.lua:664
+#: menubuilder.lua:710
 msgid "English (Scotland)"
 msgstr ""
 
-#: menubuilder.lua:665
+#: menubuilder.lua:711
 msgid "English (Lancaster)"
 msgstr ""
 
-#: menubuilder.lua:666
+#: menubuilder.lua:712
 msgid "English (West Midlands)"
 msgstr ""
 
-#: menubuilder.lua:667
+#: menubuilder.lua:713
 msgid "English (Caribbean)"
 msgstr ""
 
-#: menubuilder.lua:668
+#: menubuilder.lua:714
 msgid "English (New York City)"
 msgstr ""
 
-#: menubuilder.lua:671 menubuilder.lua:1164 menubuilder.lua:1520
+#: menubuilder.lua:717 menubuilder.lua:1324 menubuilder.lua:1680
 msgid "German"
 msgstr ""
 
-#: menubuilder.lua:672 menubuilder.lua:1165 menubuilder.lua:1519
+#: menubuilder.lua:718 menubuilder.lua:1325 menubuilder.lua:1679
 msgid "Spanish"
 msgstr ""
 
-#: menubuilder.lua:673 menubuilder.lua:1164 menubuilder.lua:1516
+#: menubuilder.lua:719 menubuilder.lua:1324 menubuilder.lua:1676
 msgid "French"
 msgstr ""
 
-#: menubuilder.lua:674 menubuilder.lua:1165 menubuilder.lua:1521
+#: menubuilder.lua:720 menubuilder.lua:1325 menubuilder.lua:1681
 msgid "Italian"
 msgstr ""
 
-#: menubuilder.lua:675 menubuilder.lua:1165
+#: menubuilder.lua:721 menubuilder.lua:1325
 msgid "Portuguese"
 msgstr ""
 
-#: menubuilder.lua:676 menubuilder.lua:1522
+#: menubuilder.lua:722 menubuilder.lua:1682
 msgid "Portuguese (Brazil)"
 msgstr ""
 
-#: menubuilder.lua:677 menubuilder.lua:1166 menubuilder.lua:1523
+#: menubuilder.lua:723 menubuilder.lua:1326 menubuilder.lua:1683
 msgid "Dutch"
 msgstr ""
 
-#: menubuilder.lua:678 menubuilder.lua:1168 menubuilder.lua:1536
+#: menubuilder.lua:724 menubuilder.lua:1328 menubuilder.lua:1697
 msgid "Russian"
 msgstr ""
 
-#: menubuilder.lua:679 menubuilder.lua:1166 menubuilder.lua:1524
+#: menubuilder.lua:725 menubuilder.lua:1326 menubuilder.lua:1684
 msgid "Polish"
 msgstr ""
 
-#: menubuilder.lua:680 menubuilder.lua:1166 menubuilder.lua:1525
+#: menubuilder.lua:726 menubuilder.lua:1326 menubuilder.lua:1685
 msgid "Czech"
 msgstr ""
 
-#: menubuilder.lua:681 menubuilder.lua:1168 menubuilder.lua:1539
+#: menubuilder.lua:727 menubuilder.lua:1326 menubuilder.lua:1686
+msgid "Slovak"
+msgstr ""
+
+#: menubuilder.lua:728 menubuilder.lua:1328 menubuilder.lua:1700
 msgid "Swedish"
 msgstr ""
 
-#: menubuilder.lua:682 menubuilder.lua:1169 menubuilder.lua:1540
+#: menubuilder.lua:729 menubuilder.lua:1329 menubuilder.lua:1701
 msgid "Turkish"
 msgstr ""
 
-#: menubuilder.lua:683 menubuilder.lua:1167 menubuilder.lua:1537
+#: menubuilder.lua:730 menubuilder.lua:1327 menubuilder.lua:1698
 msgid "Greek"
 msgstr ""
 
-#: menubuilder.lua:684 menubuilder.lua:1535
+#: menubuilder.lua:731 menubuilder.lua:1696
 msgid "Finnish"
 msgstr ""
 
-#: menubuilder.lua:685 menubuilder.lua:1541
+#: menubuilder.lua:732 menubuilder.lua:1702
 msgid "Hungarian"
 msgstr ""
 
-#: menubuilder.lua:686 menubuilder.lua:1542
+#: menubuilder.lua:733 menubuilder.lua:1703
 msgid "Romanian"
 msgstr ""
 
-#: menubuilder.lua:689 menubuilder.lua:1168 menubuilder.lua:1528
+#: menubuilder.lua:736 menubuilder.lua:1328 menubuilder.lua:1689
 msgid "Arabic"
 msgstr ""
 
-#: menubuilder.lua:690
+#: menubuilder.lua:737
 msgid "Chinese (Mandarin)"
 msgstr ""
 
-#: menubuilder.lua:691 menubuilder.lua:1167 menubuilder.lua:1532
+#: menubuilder.lua:738 menubuilder.lua:1327 menubuilder.lua:1693
 msgid "Japanese"
 msgstr ""
 
-#: menubuilder.lua:692 menubuilder.lua:1533
+#: menubuilder.lua:739 menubuilder.lua:1694
 msgid "Korean"
 msgstr ""
 
-#: menubuilder.lua:693 menubuilder.lua:1527
+#: menubuilder.lua:740 menubuilder.lua:1688
 msgid "Hindi"
 msgstr ""
 
-#: menubuilder.lua:694
+#: menubuilder.lua:741
 msgid "Vietnamese"
 msgstr ""
 
-#: menubuilder.lua:698
+#: menubuilder.lua:745
 msgid "Default (male)"
 msgstr ""
 
-#: menubuilder.lua:701
+#: menubuilder.lua:748
 msgid "Female 1"
 msgstr ""
 
-#: menubuilder.lua:702
+#: menubuilder.lua:749
 msgid "Female 2"
 msgstr ""
 
-#: menubuilder.lua:703
+#: menubuilder.lua:750
 msgid "Female 3"
 msgstr ""
 
-#: menubuilder.lua:704
+#: menubuilder.lua:751
 msgid "Female 4 (breathy)"
 msgstr ""
 
-#: menubuilder.lua:705
+#: menubuilder.lua:752
 msgid "Female 5"
 msgstr ""
 
-#: menubuilder.lua:707
+#: menubuilder.lua:754
 msgid "Annie (F)"
 msgstr ""
 
-#: menubuilder.lua:708
+#: menubuilder.lua:755
 msgid "Alicia (F)"
 msgstr ""
 
-#: menubuilder.lua:709
+#: menubuilder.lua:756
 msgid "Belinda (F)"
 msgstr ""
 
-#: menubuilder.lua:710
+#: menubuilder.lua:757
 msgid "Linda (F)"
 msgstr ""
 
-#: menubuilder.lua:711
+#: menubuilder.lua:758
 msgid "Steph (F)"
 msgstr ""
 
-#: menubuilder.lua:712
+#: menubuilder.lua:759
 msgid "Andrea (F)"
 msgstr ""
 
-#: menubuilder.lua:713
+#: menubuilder.lua:760
 msgid "Anika (F)"
 msgstr ""
 
-#: menubuilder.lua:714
+#: menubuilder.lua:761
 msgid "Aunty (F)"
 msgstr ""
 
-#: menubuilder.lua:715
+#: menubuilder.lua:762
 msgid "Grandma (F)"
 msgstr ""
 
-#: menubuilder.lua:718
+#: menubuilder.lua:765
 msgid "Male 1"
 msgstr ""
 
-#: menubuilder.lua:719
+#: menubuilder.lua:766
 msgid "Male 2"
 msgstr ""
 
-#: menubuilder.lua:720
+#: menubuilder.lua:767
 msgid "Male 3"
 msgstr ""
 
-#: menubuilder.lua:721
+#: menubuilder.lua:768
 msgid "Male 4"
 msgstr ""
 
-#: menubuilder.lua:722
+#: menubuilder.lua:769
 msgid "Male 5"
 msgstr ""
 
-#: menubuilder.lua:723
+#: menubuilder.lua:770
 msgid "Male 6"
 msgstr ""
 
-#: menubuilder.lua:724
+#: menubuilder.lua:771
 msgid "Male 7"
 msgstr ""
 
-#: menubuilder.lua:725
+#: menubuilder.lua:772
 msgid "Alex (M)"
 msgstr ""
 
-#: menubuilder.lua:726
+#: menubuilder.lua:773
 msgid "Andy (M)"
 msgstr ""
 
-#: menubuilder.lua:727
+#: menubuilder.lua:774
 msgid "Gene (M)"
 msgstr ""
 
-#: menubuilder.lua:728
+#: menubuilder.lua:775
 msgid "Lee (M)"
 msgstr ""
 
-#: menubuilder.lua:729
+#: menubuilder.lua:776
 msgid "Shelby (M, smooth)"
 msgstr ""
 
-#: menubuilder.lua:732
+#: menubuilder.lua:779
 msgid "Robosoft 1 (softer)"
 msgstr ""
 
-#: menubuilder.lua:733
+#: menubuilder.lua:780
 msgid "Robosoft 2 (softer)"
 msgstr ""
 
-#: menubuilder.lua:734
+#: menubuilder.lua:781
 msgid "Robosoft 3 (softer)"
 msgstr ""
 
-#: menubuilder.lua:735
+#: menubuilder.lua:782
 msgid "Robosoft 4 (softer)"
 msgstr ""
 
-#: menubuilder.lua:736
+#: menubuilder.lua:783
 msgid "Robosoft 5 (softer)"
 msgstr ""
 
-#: menubuilder.lua:737
+#: menubuilder.lua:784
 msgid "Robosoft 6 (softer)"
 msgstr ""
 
-#: menubuilder.lua:738
+#: menubuilder.lua:785
 msgid "Robosoft 7 (softer)"
 msgstr ""
 
-#: menubuilder.lua:739
+#: menubuilder.lua:786
 msgid "Robosoft 8 (softer)"
 msgstr ""
 
-#: menubuilder.lua:742
+#: menubuilder.lua:789
 msgid "Whisper"
 msgstr ""
 
-#: menubuilder.lua:743
+#: menubuilder.lua:790
 msgid "Whisper (female)"
 msgstr ""
 
-#: menubuilder.lua:744
+#: menubuilder.lua:791
 msgid "Croak"
 msgstr ""
 
-#: menubuilder.lua:771
+#: menubuilder.lua:818
 msgid "Accent: %1"
 msgstr ""
 
-#: menubuilder.lua:798
+#: menubuilder.lua:845
 msgid "Voice type: %1"
 msgstr ""
 
-#: menubuilder.lua:808
+#: menubuilder.lua:855
 msgid "Background highlight"
 msgstr ""
 
-#: menubuilder.lua:810
+#: menubuilder.lua:857
 msgid "Box border"
 msgstr ""
 
-#: menubuilder.lua:811
+#: menubuilder.lua:858
 msgid "Invert colors"
 msgstr ""
 
-#: menubuilder.lua:860
+#: menubuilder.lua:907
 msgid "espeak-ng (formant, fast, robotic)"
 msgstr ""
 
-#: menubuilder.lua:868
+#: menubuilder.lua:915
 msgid "Piper (neural, natural-sounding)"
 msgstr ""
 
-#: menubuilder.lua:876
+#: menubuilder.lua:923
 msgid "sanoTTS (neural, lightweight)"
 msgstr ""
 
-#: menubuilder.lua:895
+#: menubuilder.lua:932
+msgid "sanoTTS-jp (Japanese neural)"
+msgstr ""
+
+#: menubuilder.lua:951
 msgid "Platform-native helper (user-supplied engine)"
 msgstr ""
 
-#: menubuilder.lua:901
+#: menubuilder.lua:957
 msgid "No TTS engines found"
 msgstr ""
 
-#: menubuilder.lua:942
+#: menubuilder.lua:998
 msgid "No voice models found"
 msgstr ""
 
-#: menubuilder.lua:946
+#: menubuilder.lua:1002
 msgid "Place .onnx files in plugins/audiobook.koplugin/piper/"
 msgstr ""
 
-#: menubuilder.lua:994
+#: menubuilder.lua:1050
 msgid "Note: this device has limited CPU/RAM. Piper voices may pause between sentences or fall back to espeak during playback. Enabling \"Low-resource mode\" in Voice settings can help."
 msgstr ""
 
-#: menubuilder.lua:1023
+#: menubuilder.lua:1074
+msgid "No sanoTTS voices found"
+msgstr ""
+
+#: menubuilder.lua:1112
 msgid "Refresh voice list from internet"
 msgstr ""
 
-#: menubuilder.lua:1027
+#: menubuilder.lua:1116
 msgid "Fetching latest voice list…"
 msgstr ""
 
-#: menubuilder.lua:1035
+#: menubuilder.lua:1124
 msgid ""
 "Voice list updated.\n"
 "%1 voices available."
 msgstr ""
 
-#: menubuilder.lua:1040
+#: menubuilder.lua:1129
 msgid ""
 "Could not refresh voice list.\n"
 "\n"
 msgstr ""
 
-#: menubuilder.lua:1048
+#: menubuilder.lua:1137
 msgid "─"
 msgstr ""
 
-#: menubuilder.lua:1068 menubuilder.lua:1251
+#: menubuilder.lua:1157 menubuilder.lua:1411
 msgid " ✓ installed"
 msgstr ""
 
-#: menubuilder.lua:1077 menubuilder.lua:1260
+#: menubuilder.lua:1166 menubuilder.lua:1420
 msgid "Downloading "
 msgstr ""
 
-#: menubuilder.lua:1077 menubuilder.lua:1260
+#: menubuilder.lua:1166 menubuilder.lua:1420
 msgid ""
 "…\n"
 "(~"
 msgstr ""
 
-#: menubuilder.lua:1078 menubuilder.lua:1261
+#: menubuilder.lua:1167 menubuilder.lua:1421
 msgid " MB)"
 msgstr ""
 
-#: menubuilder.lua:1098 menubuilder.lua:1279
+#: menubuilder.lua:1187 menubuilder.lua:1439
 msgid ""
 "Voice installed:\n"
 msgstr ""
 
-#: menubuilder.lua:1099
+#: menubuilder.lua:1188
 msgid ""
 "\n"
 "\n"
 "It is now selected as your active Piper voice."
 msgstr ""
 
-#: menubuilder.lua:1104 menubuilder.lua:1285
+#: menubuilder.lua:1193 menubuilder.lua:1261 menubuilder.lua:1445
 msgid ""
 "Download failed:\n"
 msgstr ""
 
-#: menubuilder.lua:1139
+#: menubuilder.lua:1220
+msgid "Japanese voice for sanoTTS: two files, ~14 MB total, from the sanoTTS-jp v1.0.0 release (MIT). The plugin bundles none of this data."
+msgstr ""
+
+#: menubuilder.lua:1225
+msgid "Voice weights"
+msgstr ""
+
+#: menubuilder.lua:1226
+msgid "Japanese dictionary (438k entries)"
+msgstr ""
+
+#: menubuilder.lua:1246
+msgid "Downloading sanoTTS-jp file…"
+msgstr ""
+
+#: menubuilder.lua:1256
+msgid ""
+"Downloaded.\n"
+"\n"
+"Weights & dictionary © ayutaz/sanoTTS-jp (release v1.0.0). Their usage terms (LICENSE-MODEL.md, NOTICE.md) were saved next to the voice. Select 'sanoTTS-jp (Japanese)' under TTS engine to use it."
+msgstr ""
+
+#: menubuilder.lua:1271
+msgid "When both files are downloaded, select 'sanoTTS-jp (Japanese)' under TTS engine."
+msgstr ""
+
+#: menubuilder.lua:1299
 msgid "Disable MBROLA (use regular espeak-ng voice)"
 msgstr ""
 
-#: menubuilder.lua:1164
+#: menubuilder.lua:1324
 msgid "English"
 msgstr ""
 
-#: menubuilder.lua:1167
+#: menubuilder.lua:1327
 msgid "Chinese"
 msgstr ""
 
-#: menubuilder.lua:1195
+#: menubuilder.lua:1355
 msgid " (bundled)"
 msgstr ""
 
-#: menubuilder.lua:1209
+#: menubuilder.lua:1369
 msgid ""
 "MBROLA voice selected:\n"
 "%1"
 msgstr ""
 
-#: menubuilder.lua:1280
+#: menubuilder.lua:1440
 msgid ""
 "\n"
 "\n"
 "It is now selected as your active MBROLA voice."
 msgstr ""
 
-#: menubuilder.lua:1298
+#: menubuilder.lua:1458
 msgid "All available MBROLA voices are already installed."
 msgstr ""
 
-#: menubuilder.lua:1317
+#: menubuilder.lua:1477
 msgid "Native helper: not set"
 msgstr ""
 
-#: menubuilder.lua:1319
+#: menubuilder.lua:1479
 msgid "Native helper: %1"
 msgstr ""
 
-#: menubuilder.lua:1329
+#: menubuilder.lua:1489
 msgid "Input encoding: %1"
 msgstr ""
 
-#: menubuilder.lua:1357
+#: menubuilder.lua:1517
 msgid "daemon/FIFO"
 msgstr ""
 
-#: menubuilder.lua:1357
+#: menubuilder.lua:1517
 msgid "one-shot"
 msgstr ""
 
-#: menubuilder.lua:1358
+#: menubuilder.lua:1518
 msgid "Speed mode: %1"
 msgstr ""
 
-#: menubuilder.lua:1362
+#: menubuilder.lua:1522
 msgid "One-shot (run helper per sentence)"
 msgstr ""
 
-#: menubuilder.lua:1371
+#: menubuilder.lua:1531
 msgid "Daemon/FIFO (keep helper running)"
 msgstr ""
 
-#: menubuilder.lua:1387
+#: menubuilder.lua:1547
 msgid "FIFO path: default"
 msgstr ""
 
-#: menubuilder.lua:1389
+#: menubuilder.lua:1549
 msgid "FIFO path: %1"
 msgstr ""
 
-#: menubuilder.lua:1401
+#: menubuilder.lua:1561
 msgid "Pre-synthesis command: none"
 msgstr ""
 
-#: menubuilder.lua:1403
+#: menubuilder.lua:1563
 msgid "Pre-synthesis command: %1"
 msgstr ""
 
-#: menubuilder.lua:1420
+#: menubuilder.lua:1580
 msgid "Select native TTS helper"
 msgstr ""
 
-#: menubuilder.lua:1432
+#: menubuilder.lua:1592
 msgid "Native helper path saved."
 msgstr ""
 
-#: menubuilder.lua:1447
+#: menubuilder.lua:1607
 msgid "Native TTS FIFO path"
 msgstr ""
 
-#: menubuilder.lua:1450
+#: menubuilder.lua:1610
 msgid "Optional path to the request FIFO used in daemon mode. Leave empty to use the default."
 msgstr ""
 
-#: menubuilder.lua:1482
+#: menubuilder.lua:1642
 msgid "Pre-synthesis command"
 msgstr ""
 
-#: menubuilder.lua:1485
+#: menubuilder.lua:1645
 msgid "Optional shell command to run before each synthesis request (for example, to wake or restart a device-specific audio path)."
 msgstr ""
 
-#: menubuilder.lua:1518
+#: menubuilder.lua:1678
 msgid "English (UK)"
 msgstr ""
 
-#: menubuilder.lua:1526
+#: menubuilder.lua:1687
 msgid "Ukrainian"
 msgstr ""
 
-#: menubuilder.lua:1529
+#: menubuilder.lua:1690
 msgid "Catalan"
 msgstr ""
 
-#: menubuilder.lua:1530
+#: menubuilder.lua:1691
 msgid "Chinese (Simplified)"
 msgstr ""
 
-#: menubuilder.lua:1531
+#: menubuilder.lua:1692
 msgid "Chinese (Traditional)"
 msgstr ""
 
-#: menubuilder.lua:1534
+#: menubuilder.lua:1695
 msgid "Danish"
 msgstr ""
 
-#: menubuilder.lua:1538
+#: menubuilder.lua:1699
 msgid "Norwegian"
 msgstr ""
 
-#: menubuilder.lua:1561
+#: menubuilder.lua:1722
 msgid "offline"
 msgstr ""
 
-#: menubuilder.lua:1561
+#: menubuilder.lua:1722
 msgid "online"
 msgstr ""
 
-#: menubuilder.lua:1563
+#: menubuilder.lua:1724
 msgid "%1 · %2 (%3)"
 msgstr ""
 
-#: menubuilder.lua:1565
+#: menubuilder.lua:1726
 msgid "%1 (%2)"
 msgstr ""
 
-#: menubuilder.lua:1582 menubuilder.lua:1604 menubuilder.lua:1848 menubuilder.lua:1884
+#: menubuilder.lua:1743 menubuilder.lua:1765 menubuilder.lua:2009 menubuilder.lua:2045
 msgid "Voice set to %1."
 msgstr ""
 
-#: menubuilder.lua:1617
+#: menubuilder.lua:1778
 msgid "No voices found."
 msgstr ""
 
-#: menubuilder.lua:1626 menubuilder.lua:1719 menubuilder.lua:1730
+#: menubuilder.lua:1787 menubuilder.lua:1880 menubuilder.lua:1891
 msgid "Could not open voice list."
 msgstr ""
 
-#: menubuilder.lua:1708 menubuilder.lua:1919 menubuilder.lua:1933
+#: menubuilder.lua:1869 menubuilder.lua:2080 menubuilder.lua:2094
 msgid "Select voice"
 msgstr ""
 
-#: menubuilder.lua:1744
+#: menubuilder.lua:1905
 msgid "Auto (book language)"
 msgstr ""
 
-#: menubuilder.lua:1754
+#: menubuilder.lua:1915
 msgid "Languages"
 msgstr ""
 
-#: menubuilder.lua:1794
+#: menubuilder.lua:1955
 msgid "Installed voices"
 msgstr ""
 
-#: menubuilder.lua:1911
+#: menubuilder.lua:2072
 msgid "Loading voices…"
 msgstr ""
 
-#: menubuilder.lua:1991
+#: menubuilder.lua:2152
 msgid "Speech rate"
 msgstr ""
 
-#: menubuilder.lua:2014 menubuilder.lua:2045
+#: menubuilder.lua:2175 menubuilder.lua:2206
 msgid "Sentence pause"
 msgstr ""
 
-#: menubuilder.lua:2029 menubuilder.lua:2060
+#: menubuilder.lua:2190 menubuilder.lua:2221
 msgid "Paragraph pause"
 msgstr ""
 
-#: menubuilder.lua:2076
+#: menubuilder.lua:2237
 msgid "Volume"
 msgstr ""
 
-#: menubuilder.lua:2096
+#: menubuilder.lua:2257
 msgid "TTS settings"
 msgstr ""
 
-#: piperqueue.lua:659
+#: piperqueue.lua:699
 msgid ""
 "Piper server failed to start (timeout).\n"
 "Neural TTS may be too heavy for this device.\n"
 "Switch to the espeak backend for reliable playback."
 msgstr ""
 
-#: piperqueue.lua:815
+#: piperqueue.lua:866
 msgid ""
 "Piper neural TTS servers stopped responding.\n"
 "This often happens on devices with limited RAM or CPU.\n"
@@ -2455,88 +2530,88 @@ msgid ""
 "Contents: %2"
 msgstr ""
 
-#: synccontroller.lua:736
+#: synccontroller.lua:737
 msgid ""
 "Neural synthesis in progress...\n"
 "This device needs about %1 seconds per sentence."
 msgstr ""
 
-#: synccontroller.lua:739
+#: synccontroller.lua:740
 msgid ""
 "Neural synthesis in progress...\n"
 "Please wait."
 msgstr ""
 
-#: synccontroller.lua:750
+#: synccontroller.lua:751
 msgid ""
 "Piper is still synthesizing.\n"
 "For faster playback, switch to the espeak backend in Tools → Audiobook → TTS Engine."
 msgstr ""
 
-#: synccontroller.lua:893 synccontroller.lua:2573 ttsengine.lua:1505
+#: synccontroller.lua:894 synccontroller.lua:2574 ttsengine.lua:1577
 msgid "Piper"
 msgstr ""
 
-#: synccontroller.lua:893
+#: synccontroller.lua:894
 msgid "sanoTTS"
 msgstr ""
 
-#: synccontroller.lua:895 synccontroller.lua:2598
+#: synccontroller.lua:896 synccontroller.lua:2599
 msgid "Starting %1, please wait…"
 msgstr ""
 
-#: synccontroller.lua:2570 synccontroller.lua:2582
+#: synccontroller.lua:2571 synccontroller.lua:2583
 msgid "TTS"
 msgstr ""
 
-#: synccontroller.lua:2608
+#: synccontroller.lua:2609
 msgid ""
 "Still waiting for %1 after 12 seconds.\n"
 "\n"
 "On-device neural voices (SherpaTTS, VoxSherpa TTS, and similar) often run slower than real time on this e-reader. If nothing plays, this device is probably not suited to that TTS engine; try another system voice."
 msgstr ""
 
-#: synccontroller.lua:2643
+#: synccontroller.lua:2644
 msgid ""
 "No audio from %1 after a long wait.\n"
 "\n"
 "This e-reader is probably too slow for that on-device neural engine. Open the TTS app once, or switch to another system voice."
 msgstr ""
 
-#: synccontroller.lua:2652
+#: synccontroller.lua:2653
 msgid "The Android TTS engine stopped. Neural voices can be killed for memory; open the TTS app once, then start read-aloud again."
 msgstr ""
 
-#: synccontroller.lua:2743
+#: synccontroller.lua:2744
 msgid "low-resource mode"
 msgstr ""
 
-#: synccontroller.lua:2744
+#: synccontroller.lua:2745
 msgid "sentence splitting"
 msgstr ""
 
-#: synccontroller.lua:2748
+#: synccontroller.lua:2749
 msgid ""
 "Piper is synthesizing slower than playback (%1x realtime).\n"
 "Applying %2 to compensate (this session only)."
 msgstr ""
 
-#: synccontroller.lua:2769
+#: synccontroller.lua:2771
 msgid ""
 "This device is too slow for Piper voices.\n"
 "Switching to espeak for this session.\n"
 "Piper will be tried again the next time you start playback."
 msgstr ""
 
-#: synccontroller.lua:2797
+#: synccontroller.lua:2809
 msgid "it still had not produced any audio after %1 espeak sentences"
 msgstr ""
 
-#: synccontroller.lua:2802
+#: synccontroller.lua:2814
 msgid "it still had not produced any audio after %1 minutes of espeak fallback"
 msgstr ""
 
-#: synccontroller.lua:2814
+#: synccontroller.lua:2827
 msgid ""
 "Piper neural TTS could not keep up on this device: %1.\n"
 "\n"
@@ -2544,7 +2619,7 @@ msgid ""
 "  Audiobook > Voice settings > TTS engine"
 msgstr ""
 
-#: ttsengine.lua:424
+#: ttsengine.lua:494
 msgid ""
 "No TTS engine available on this device.\n"
 "\n"
@@ -2558,7 +2633,7 @@ msgid ""
 "Then add Termux to your PATH before launching KOReader."
 msgstr ""
 
-#: ttsengine.lua:437
+#: ttsengine.lua:507
 msgid ""
 "No TTS engine found.\n"
 "\n"
@@ -2572,11 +2647,11 @@ msgid ""
 "If you already installed from the .zip, please generate a bug report from the plugin menu and post it on GitHub."
 msgstr ""
 
-#: ttsengine.lua:439
+#: ttsengine.lua:509
 msgid "No TTS engine found. Please install espeak-ng."
 msgstr ""
 
-#: ttsengine.lua:591
+#: ttsengine.lua:661
 msgid ""
 "No TTS engine available.\n"
 "\n"
@@ -2586,18 +2661,18 @@ msgid ""
 "See README for details."
 msgstr ""
 
-#: ttsengine.lua:1162
+#: ttsengine.lua:1233
 msgid "TTS backend error: Cannot create synthesis command."
 msgstr ""
 
-#: ttsengine.lua:1238
+#: ttsengine.lua:1310
 msgid ""
 "Piper voice model is incompatible with this device (ONNX Runtime error).\n"
 "\n"
 "Switching to espeak-ng. You can select a different voice in Audiobook settings."
 msgstr ""
 
-#: ttsengine.lua:1323
+#: ttsengine.lua:1395
 msgid ""
 "TTS synthesis failed.\n"
 "\n"
@@ -2609,52 +2684,52 @@ msgid ""
 "• Insufficient free memory"
 msgstr ""
 
-#: ttsengine.lua:1325
+#: ttsengine.lua:1397
 msgid ""
 "\n"
 "\n"
 "Error output:\n"
 msgstr ""
 
-#: ttsengine.lua:1487
+#: ttsengine.lua:1559
 msgid "Detecting…"
 msgstr ""
 
-#: ttsengine.lua:1488
+#: ttsengine.lua:1560
 msgid "Not detected"
 msgstr ""
 
-#: ttsengine.lua:1491 ttsengine.lua:1497
+#: ttsengine.lua:1563 ttsengine.lua:1569
 msgid "SherpaTTS"
 msgstr ""
 
-#: ttsengine.lua:1493
+#: ttsengine.lua:1565
 msgid "VoxSherpa TTS"
 msgstr ""
 
-#: ttsengine.lua:1499
+#: ttsengine.lua:1571
 msgid "Google"
 msgstr ""
 
-#: ttsengine.lua:1500
+#: ttsengine.lua:1572
 msgid "Samsung"
 msgstr ""
 
-#: ttsengine.lua:1504
+#: ttsengine.lua:1576
 msgid "RHVoice"
 msgstr ""
 
-#: ttsengine.lua:1507
+#: ttsengine.lua:1579
 msgid "Unknown (%1)"
 msgstr ""
 
-#: ttsengine.lua:1621
+#: ttsengine.lua:1693
 msgid ""
 "Android TTS: no voice available for %1.\n"
 "Install the matching voice data in Android's Text-to-speech settings, or pick a different language in Voice settings."
 msgstr ""
 
-#: ttsengine.lua:2081
+#: ttsengine.lua:2155
 msgid ""
 "Bluetooth audio pipeline failed.\n"
 "\n"
@@ -2670,11 +2745,11 @@ msgid ""
 "Read-along audio playback has been stopped."
 msgstr ""
 
-#: ttsengine.lua:2131
+#: ttsengine.lua:2205
 msgid "No audio file to play."
 msgstr ""
 
-#: ttsengine.lua:2154 ttsengine.lua:2253
+#: ttsengine.lua:2228 ttsengine.lua:2327
 msgid ""
 "No audio output available.\n"
 "\n"
@@ -2683,7 +2758,7 @@ msgid ""
 "Please generate a bug report (Audiobook > Generate bug report) and share it on the GitHub issue."
 msgstr ""
 
-#: ttsengine.lua:2156
+#: ttsengine.lua:2230
 msgid ""
 "No audio output available.\n"
 "\n"
@@ -2692,7 +2767,7 @@ msgid ""
 "Please generate a bug report (Audiobook > Generate bug report) and share it on the GitHub issue -- it will help identify the correct audio path for this Kindle model."
 msgstr ""
 
-#: ttsengine.lua:2158
+#: ttsengine.lua:2232
 msgid ""
 "No audio output available.\n"
 "\n"
@@ -2704,7 +2779,7 @@ msgid ""
 "Then try again."
 msgstr ""
 
-#: ttsengine.lua:2160
+#: ttsengine.lua:2234
 msgid ""
 "No audio output available.\n"
 "\n"
@@ -2716,7 +2791,7 @@ msgid ""
 "If that does not help, generate a bug report (Audiobook > Generate bug report) and share it on GitHub."
 msgstr ""
 
-#: ttsengine.lua:2162
+#: ttsengine.lua:2236
 msgid ""
 "No audio output available.\n"
 "\n"
@@ -2725,7 +2800,7 @@ msgid ""
 "If using Bluetooth, make sure headphones are paired and connected."
 msgstr ""
 
-#: ttsengine.lua:2255
+#: ttsengine.lua:2329
 msgid ""
 "No audio output available.\n"
 "\n"
@@ -2734,7 +2809,7 @@ msgid ""
 "If you already have headphones connected, please generate a bug report (Audiobook > Generate bug report) and share it on GitHub — it will help identify the correct audio path for this Kindle model."
 msgstr ""
 
-#: ttsengine.lua:2257 ttsengine.lua:6531
+#: ttsengine.lua:2331 ttsengine.lua:6594
 msgid ""
 "No audio output available.\n"
 "\n"
@@ -2746,21 +2821,21 @@ msgid ""
 "4. Then start read-along again."
 msgstr ""
 
-#: ttsengine.lua:2351
+#: ttsengine.lua:2425
 msgid ""
 "No Bluetooth headphones detected.\n"
 "\n"
 "This Kindle has no built-in speaker. Connect Bluetooth headphones in Settings → Wi-Fi & Bluetooth before playing."
 msgstr ""
 
-#: ttsengine.lua:2416
+#: ttsengine.lua:2490
 msgid ""
 "No audio output available.\n"
 "\n"
 "On this PocketBook, direct ALSA playback can damage the audio subsystem. Please connect Bluetooth headphones first, then try again."
 msgstr ""
 
-#: ttsengine.lua:2516
+#: ttsengine.lua:2590
 msgid ""
 "Using Kindle's built-in voice.\n"
 "\n"
@@ -2769,21 +2844,21 @@ msgid ""
 "Word highlighting may be slightly less precise with the built-in voice."
 msgstr ""
 
-#: ttsengine.lua:2796
+#: ttsengine.lua:2870
 msgid ""
 "Kindle native TTS failed.\n"
 "\n"
 "The text-to-speech helper binary could not be executed. Please generate a bug report and share it on GitHub."
 msgstr ""
 
-#: ttsengine.lua:2808
+#: ttsengine.lua:2882
 msgid ""
 "Kindle native TTS failed.\n"
 "\n"
 "The text-to-speech engine could not produce audio. Please generate a bug report and share it on GitHub."
 msgstr ""
 
-#: ttsengine.lua:3059
+#: ttsengine.lua:3133
 msgid ""
 "Kindle native TTS failed.\n"
 "\n"
@@ -2792,14 +2867,14 @@ msgid ""
 "Please generate a bug report and share it on GitHub."
 msgstr ""
 
-#: ttsengine.lua:3177
+#: ttsengine.lua:3251
 msgid ""
 "Audio playback failed on this Kindle model.\n"
 "\n"
 "The ttssrc TTS pipeline could not start. Please generate a bug report and share it on the GitHub issue."
 msgstr ""
 
-#: ttsengine.lua:3436 ttsengine.lua:3531
+#: ttsengine.lua:3510 ttsengine.lua:3605
 msgid ""
 "Kindle audio playback failed.\n"
 "\n"
@@ -2815,7 +2890,7 @@ msgid ""
 "If this persists, please generate a bug report (Audiobook > Generate bug report) and share it on GitHub."
 msgstr ""
 
-#: ttsengine.lua:3529
+#: ttsengine.lua:3603
 msgid ""
 "Kindle audio playback failed.\n"
 "\n"
@@ -2828,7 +2903,7 @@ msgid ""
 "Please generate a bug report (Audiobook > Generate bug report) and share it on GitHub."
 msgstr ""
 
-#: ttsengine.lua:3707
+#: ttsengine.lua:3781
 msgid ""
 "Audio playback failed on this Kindle model.\n"
 "\n"
@@ -2837,21 +2912,21 @@ msgid ""
 "Please generate a bug report (Audiobook > Generate bug report) and share it on the GitHub issue."
 msgstr ""
 
-#: ttsengine.lua:3778
+#: ttsengine.lua:3852
 msgid ""
 "Audio playback failed on this Kindle model.\n"
 "\n"
 "The GStreamer audio pipeline could not start"
 msgstr ""
 
-#: ttsengine.lua:3784
+#: ttsengine.lua:3858
 msgid ""
 "\n"
 "\n"
 "This is often a system library compatibility issue. Try connecting Bluetooth headphones via Kindle Settings, switch to the espeak backend (Tools → Audiobook → Voice settings → TTS engine), or generate a bug report (Audiobook > Generate bug report) and share it on the GitHub issue."
 msgstr ""
 
-#: ttsengine.lua:6374
+#: ttsengine.lua:6437
 msgid ""
 "Bluetooth audio not connected.\n"
 "\n"
@@ -2864,19 +2939,19 @@ msgid ""
 "Then try again."
 msgstr ""
 
-#: ttsengine.lua:6476
+#: ttsengine.lua:6539
 msgid "The audio player keeps crashing, playback was stopped."
 msgstr ""
 
-#: ttsengine.lua:6477
+#: ttsengine.lua:6540
 msgid "Last error:"
 msgstr ""
 
-#: ttsengine.lua:6479
+#: ttsengine.lua:6542
 msgid "Please generate a bug report (Audiobook > Generate bug report) and share it on GitHub."
 msgstr ""
 
-#: ttsengine.lua:6527
+#: ttsengine.lua:6590
 msgid ""
 "No audio output available.\n"
 "\n"
