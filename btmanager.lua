@@ -699,29 +699,35 @@ function BTManager:powerOn()
                 os.execute("sleep 1")
                 had_to_restart_btd = true
             end
-            -- Reset the HCI adapter.  Use ";" instead of "&&" so that
-            -- "hci0 up" still runs even when "hci0 down" fails (which
-            -- happens on Kobo Libra 2 when the adapter hasn't been
-            -- initialised yet and hci0 doesn't exist).
-            os.execute("hciconfig hci0 down 2>/dev/null; hciconfig hci0 up 2>/dev/null")
-            -- Wait for the HCI device to appear.  Use integer sleep
-            -- because PocketBook's BusyBox sleep rejects fractions.
-            -- Increase timeout from 6s to 12s: some devices need the
-            -- extra time after a bluetoothd restart (issue #14).
+            -- Reset the HCI adapter, then wait for it to come UP.
+            -- Use ";" instead of "&&" so that "hci0 up" still runs even
+            -- when "hci0 down" fails (which happens on Kobo Libra 2 when
+            -- the adapter hasn't been initialised yet and hci0 doesn't
+            -- exist).  After a fresh bluetoothd start the adapter
+            -- registers asynchronously: hciconfig can report "No such
+            -- device" for the first seconds, and the previous poll
+            -- matched the literal "hci0" text even for an adapter that
+            -- never came up, so playback raced a dead link (issue #93
+            -- second report: BlueALSA started against "Network is
+            -- down").  Retry "hci0 up" every second and require the UP
+            -- flag before proceeding.  Integer sleeps: PocketBook's
+            -- BusyBox sleep rejects fractions.
+            os.execute("hciconfig hci0 down 2>/dev/null")
             local hci_ready = false
             for attempt = 1, 12 do
+                os.execute("hciconfig hci0 up 2>/dev/null")
                 os.execute("sleep 1")
                 local h = io.popen("hciconfig hci0 2>/dev/null")
                 local r = h and h:read("*a") or ""
                 if h then h:close() end
-                if r:match("hci0") then
+                if r:match("UP") then
                     hci_ready = true
-                    logger.warn("BTManager: hci0 ready after", attempt, "s")
+                    logger.warn("BTManager: hci0 up after", attempt, "s")
                     break
                 end
             end
             if not hci_ready then
-                logger.warn("BTManager: hci0 not found after 12s")
+                logger.warn("BTManager: hci0 not up after 12s")
                 -- Fallback: try bluetoothctl power-on, which uses D-Bus
                 -- and sometimes succeeds where hciconfig fails.
                 local bc = io.popen("bluetoothctl power on 2>&1")
@@ -754,7 +760,11 @@ function BTManager:powerOn()
     -- started reactively inside findAudioPlayer() when a BT device
     -- happened to be connected at that exact moment; if the device
     -- was paired but idle, audio would fail with "no soundcards".
-    if bt_stack == "bluez" and self:hasBluealsaBundled() then
+    -- Only start it when the adapter is actually powered: BlueALSA
+    -- launched against a dead HCI logs "Couldn't get HCI version:
+    -- Network is down" and playback races the link (issue #93 second
+    -- report).
+    if bt_stack == "bluez" and self:hasBluealsaAvailable() and self:isPowered() then
         local ba_ok = self:startBluealsa()
         if not ba_ok then
             logger.err("BTManager: BlueALSA failed to start during power-on")
@@ -900,11 +910,45 @@ function BTManager:isBluealsaRunning()
     return ar:match("bluealsa") ~= nil
 end
 
+--- Resolve the firmware's own bluealsa binary, if the device ships one.
+-- Kobo firmwares with BT audio (4.33+) include /bin/bluealsa for
+-- Nickel's own playback (verified on Sage fw 4.38 and Libra Colour
+-- fw 4.45).  It is built against the firmware glibc and matches the
+-- firmware's BlueZ, so it is always preferred over the bundled build.
+-- @treturn string|nil absolute path, or nil when not shipped
+local function findSystemBluealsaBin()
+    for _, p in ipairs({"/bin/bluealsa", "/usr/bin/bluealsa", "/usr/local/bin/bluealsa"}) do
+        local f = io.open(p, "r")
+        if f then
+            f:close()
+            return p
+        end
+    end
+    local h = io.popen("which bluealsa 2>/dev/null")
+    local r = h and h:read("*l") or ""
+    if h then h:close() end
+    if r ~= "" then
+        return r
+    end
+    return nil
+end
+
+--- Check whether any bluealsa daemon can be launched: the firmware's
+-- own binary or the bundled build.
+-- @treturn bool
+function BTManager:hasBluealsaAvailable()
+    return findSystemBluealsaBin() ~= nil or findBluealsaBin() ~= nil
+end
+
 --- Start the BlueALSA daemon for BT audio bridging.
 -- Only meaningful on BlueZ Kobo devices where there is no native
 -- BT audio sink (no mtkbtmwrpcaudiosink, no PulseAudio).
 -- The daemon registers A2DP profile with BlueZ and creates ALSA
 -- PCM devices for connected BT audio devices.
+-- The firmware's own binary is preferred when shipped: it is built
+-- against the firmware glibc and matches the firmware's BlueZ, while
+-- the bundled build is cross-built against a modern glibc and needs
+-- the bundled ld-linux to even start (issue #93 on Sage fw 4.38).
 -- @treturn bool success
 function BTManager:startBluealsa()
     detectStack()
@@ -914,43 +958,50 @@ function BTManager:startBluealsa()
         return true
     end
 
+    local sys_bin = findSystemBluealsaBin()
     local bin = findBluealsaBin()
-    if not bin then
-        logger.warn("BTManager: bluealsa binary not bundled")
+    if not sys_bin and not bin then
+        logger.warn("BTManager: no bluealsa binary available (not shipped by firmware, not bundled)")
         return false
     end
 
     local ba_dir = findBluealsaDir()
-    -- Install D-Bus policy if not already present
-    local policy_src = ba_dir .. "share/dbus-1/system.d/bluealsa.conf"
+    -- Install D-Bus policy if not already present (needs the bundled
+    -- tree as the source; devices running only the firmware daemon
+    -- already have a working policy, since Nickel runs that daemon).
     local policy_dst = "/etc/dbus-1/system.d/bluealsa.conf"
-    local pf = io.open(policy_dst, "r")
-    if not pf then
-        -- Copy policy file (allows root to own org.bluealsa on system bus)
-        local ps = io.open(policy_src, "r")
-        if ps then
-            local content = ps:read("*a")
-            ps:close()
-            local pd = io.open(policy_dst, "w")
-            if pd then
-                pd:write(content)
-                pd:close()
-                -- Reload dbus config
-                os.execute("killall -HUP dbus-daemon 2>/dev/null")
-                os.execute("sleep 1")
-                logger.warn("BTManager: installed bluealsa D-Bus policy")
-            else
-                logger.err("BTManager: cannot write D-Bus policy to", policy_dst,
-                    "-- bluealsa may fail to register with D-Bus (read-only fs?)")
+    if ba_dir then
+        local policy_src = ba_dir .. "share/dbus-1/system.d/bluealsa.conf"
+        local pf = io.open(policy_dst, "r")
+        if not pf then
+            -- Copy policy file (allows root to own org.bluealsa on system bus)
+            local ps = io.open(policy_src, "r")
+            if ps then
+                local content = ps:read("*a")
+                ps:close()
+                local pd = io.open(policy_dst, "w")
+                if pd then
+                    pd:write(content)
+                    pd:close()
+                    -- Reload dbus config
+                    os.execute("killall -HUP dbus-daemon 2>/dev/null")
+                    os.execute("sleep 1")
+                    logger.warn("BTManager: installed bluealsa D-Bus policy")
+                else
+                    logger.err("BTManager: cannot write D-Bus policy to", policy_dst,
+                        "-- bluealsa may fail to register with D-Bus (read-only fs?)")
+                end
             end
+        else
+            pf:close()
         end
-    else
-        pf:close()
     end
 
     -- Install ALSA config for bluealsa PCM device
     -- On Kobo, /etc/asound.conf is read by libasound and defines the
-    -- "bluealsa" PCM type that routes audio to BT headphones.
+    -- "bluealsa" PCM type that routes audio to BT headphones.  Needs
+    -- the bundled tree as the config source; a firmware-only install
+    -- relies on the firmware's own PCM definition.
     local asound_dst = "/etc/asound.conf"
     local af = io.open(asound_dst, "r")
     local need_asound = true
@@ -959,7 +1010,7 @@ function BTManager:startBluealsa()
         af:close()
         need_asound = not content:match("pcm%.bluealsa")
     end
-    if need_asound then
+    if need_asound and ba_dir then
         local asound_src = ba_dir .. "etc/alsa/conf.d/20-bluealsa.conf"
         local as = io.open(asound_src, "r")
         if as then
@@ -981,35 +1032,39 @@ function BTManager:startBluealsa()
     -- Build the library search path from bundled libs + system libs.
     -- Include wav-play/lib which reliably bundles libasound.so.2.
     -- Include /usr/lib:/lib as a last resort for other system libs.
-    local espeak_lib = ba_dir:gsub("bluealsa/$", "") .. "espeak-ng/lib"
-    local wav_play_lib = ba_dir:gsub("bluealsa/$", "") .. "wav-play/lib"
-    local ld_path = ba_dir .. "lib:" .. espeak_lib .. ":" .. wav_play_lib .. ":/usr/lib:/lib"
-
-    -- Detect whether the binary was built against system glibc (newer
-    -- compat build) or against a newer Nix glibc (older build).
-    -- The compat build has ELF interpreter /lib/ld-linux-armhf.so.3
-    -- and can run directly with LD_LIBRARY_PATH.  The old build has
-    -- a Nix store interpreter and needs the bundled linker.
-    local function getElfInterpreter(path)
-        local h = io.popen("readelf -l " .. path .. " 2>/dev/null | grep 'interpreter'")
-        local r = h and h:read("*a") or ""
-        if h then h:close() end
-        return r:match("%[([^%]]+)%]") or ""
-    end
-
-    local interp = getElfInterpreter(bin)
-    local needs_bundled_linker = interp:match("/nix/store/") ~= nil
-
     -- Log stderr to a temp file for diagnostics instead of discarding.
     local ba_log = "/tmp/.bluealsa_start.log"
-    local cmd
-    if needs_bundled_linker then
-        -- Old binary: use bundled ld-linux + --library-path to isolate
-        -- from the device's older glibc.
+
+    -- Launch candidates, best first:
+    -- 1) the firmware's own binary, executed plainly: it is linked
+    --    against the firmware glibc and matches the firmware BlueZ.
+    -- 2) the bundled binary, always launched through the bundled
+    --    ld-linux.  The shipped binary is cross-built with a Nix store
+    --    interpreter (/nix/store/.../ld-linux-armhf.so.3), which does
+    --    not exist on devices, so a direct exec fails with a bare
+    --    "not found" even though the file is there (issue #93 follow-up
+    --    on Sage fw 4.38; the on-device readelf probe this branch used
+    --    to rely on does not exist on stock Kobo firmware, so detection
+    --    never fired).  Launching via the bundled loader works for both
+    --    the Nix build (same glibc) and a compat build (a newer loader
+    --    loads older binaries).  The bundled linker and libc come from
+    --    the espeak-ng bundle in the same zip, so they match.
+    local candidates = {}
+    if sys_bin then
+        table.insert(candidates, {
+            desc = "firmware",
+            cmd = string.format("%s --profile=a2dp-source 2>%s &", sys_bin, ba_log),
+        })
+    end
+    if bin then
+        local espeak_lib = ba_dir:gsub("bluealsa/$", "") .. "espeak-ng/lib"
+        local wav_play_lib = ba_dir:gsub("bluealsa/$", "") .. "wav-play/lib"
+        local ld_path = ba_dir .. "lib:" .. espeak_lib .. ":" .. wav_play_lib .. ":/usr/lib:/lib"
         local linker = espeak_lib .. "/ld-linux-armhf.so.3"
         local lf = io.open(linker, "r")
         local have_linker = lf ~= nil
         if lf then lf:close() end
+        local cmd
         if have_linker then
             cmd = string.format(
                 "%s --library-path %s %s --profile=a2dp-source 2>%s &",
@@ -1019,28 +1074,25 @@ function BTManager:startBluealsa()
                 "LD_LIBRARY_PATH=%s %s --profile=a2dp-source 2>%s &",
                 ld_path, bin, ba_log)
         end
-    else
-        -- New compat binary: built against device glibc; just set
-        -- LD_LIBRARY_PATH for non-glibc deps (libbluetooth, libdbus, etc.).
-        cmd = string.format(
-            "LD_LIBRARY_PATH=%s %s --profile=a2dp-source 2>%s &",
-            ld_path, bin, ba_log)
+        table.insert(candidates, { desc = "bundled", cmd = cmd })
     end
-
-    logger.warn("BTManager: starting bluealsa:", cmd)
-    os.execute(cmd)
 
     -- Give the daemon time to register with D-Bus and ALSA.
     -- Single-core Kobos need more than 1 second; poll for up to 6 s.
     local running = false
-    for attempt = 1, 3 do
-        os.execute("sleep 2")
-        running = self:isBluealsaRunning()
-        if running then
-            logger.warn("BTManager: bluealsa ready after", attempt * 2, "s")
-            break
-        else
-            logger.warn("BTManager: bluealsa not ready after attempt", attempt)
+    for _, cand in ipairs(candidates) do
+        if running then break end
+        logger.warn("BTManager: starting bluealsa (" .. cand.desc .. "):", cand.cmd)
+        os.execute(cand.cmd)
+        for attempt = 1, 3 do
+            os.execute("sleep 2")
+            running = self:isBluealsaRunning()
+            if running then
+                logger.warn("BTManager: bluealsa (" .. cand.desc .. ") ready after", attempt * 2, "s")
+                break
+            else
+                logger.warn("BTManager: bluealsa (" .. cand.desc .. ") not ready after attempt", attempt)
+            end
         end
     end
 
@@ -1056,39 +1108,6 @@ function BTManager:startBluealsa()
             end
         else
             logger.err("BTManager: bluealsa startup log not found at", ba_log)
-        end
-
-        -- Retry with the firmware's own bluealsa when the bundled build
-        -- would not start.  Newer Kobo firmwares (4.38+) ship a bluealsa
-        -- binary for Nickel's own BT audio, guaranteed to match the
-        -- firmware's BlueZ; the bundled build may lag behind (issue #93).
-        local sys_bin = nil
-        local wh = io.popen("which bluealsa 2>/dev/null")
-        local wr = wh and wh:read("*l") or ""
-        if wh then wh:close() end
-        if wr ~= "" then
-            sys_bin = wr
-        else
-            for _, p in ipairs({"/usr/bin/bluealsa", "/bin/bluealsa", "/usr/local/bin/bluealsa"}) do
-                local sf = io.open(p, "r")
-                if sf then
-                    sf:close()
-                    sys_bin = p
-                    break
-                end
-            end
-        end
-        if sys_bin then
-            logger.warn("BTManager: bundled bluealsa failed, retrying with system binary:", sys_bin)
-            os.execute(string.format("%s --profile=a2dp-source 2>>%s &", sys_bin, ba_log))
-            for attempt = 1, 3 do
-                os.execute("sleep 2")
-                running = self:isBluealsaRunning()
-                if running then
-                    logger.warn("BTManager: system bluealsa ready after", attempt * 2, "s")
-                    break
-                end
-            end
         end
     end
 
@@ -1134,9 +1153,27 @@ end
 -- .so (the PCM type "bluealsa" is defined in /etc/asound.conf by
 -- startBluealsa); LD_LIBRARY_PATH resolves the plugin's own deps
 -- (libsbc, libglib, libdbus, libbluetooth) from the bundled libs.
+-- When the firmware ships its own bluealsa ALSA plugin (same
+-- generations that ship /bin/bluealsa), return "": its plugin is built
+-- against the firmware glibc, while the bundled one requires modern
+-- glibc symbols (GLIBC_2.34+) that the firmware's aplay cannot
+-- provide, so overriding the plugin directory would break playback
+-- (verified on Libra Colour fw 4.45: firmware plugin in
+-- /lib/alsa-lib, glibc 2.19).
 -- @treturn string env prefix with trailing space, or "" when the
---   bluealsa plugin directory is unavailable
+--   firmware plugin exists or the bluealsa plugin directory is
+--   unavailable
 function BTManager:getBluealsaEnv()
+    for _, p in ipairs({
+        "/lib/alsa-lib/libasound_module_pcm_bluealsa.so",
+        "/usr/lib/alsa-lib/libasound_module_pcm_bluealsa.so",
+    }) do
+        local f = io.open(p, "r")
+        if f then
+            f:close()
+            return ""
+        end
+    end
     local plugin_dir = self:getBluealsaPluginDir()
     if not plugin_dir then return "" end
     local lib_dir = plugin_dir:gsub("/alsa%-lib$", "")
@@ -1181,7 +1218,7 @@ function BTManager:restoreSavedDevice(plugin)
         -- Stack healthy, device connected (e.g. KSM launch, where
         -- koreader.sh never touched BT).  Only bluealsa may need
         -- starting, and ttsengine re-checks it lazily anyway.
-        if not self:isBluealsaRunning() and self:hasBluealsaBundled() then
+        if not self:isBluealsaRunning() and self:hasBluealsaAvailable() then
             self:startBluealsa()
         end
         return true
@@ -1650,7 +1687,7 @@ function BTManager:connect(address)
         -- Start BlueALSA even on the fast path; otherwise a device that
         -- was already connected when the plugin loaded would never trigger
         -- the post-connect BlueALSA startup (issue #8).
-        if bt_stack == "bluez" and self:hasBluealsaBundled() then
+        if bt_stack == "bluez" and self:hasBluealsaAvailable() then
             self:startBluealsa()
         end
         return true
@@ -1732,7 +1769,7 @@ function BTManager:connect(address)
         -- Device1.Connect returns.  Give it a moment to settle.
         os.execute("sleep 2")
         -- Start bluealsa daemon if bundled (provides ALSA PCM for BT audio)
-        if self:hasBluealsaBundled() then
+        if self:hasBluealsaAvailable() then
             self:startBluealsa()
         end
         logger.warn("BTManager: BlueZ device connected, A2DP profile settling")

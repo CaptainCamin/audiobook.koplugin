@@ -1561,7 +1561,7 @@ function MediaEngine:_bluealsaSinkCommand()
     end
     if not connected then return nil end
     if not bt:isBluealsaRunning() then
-        if not bt:hasBluealsaBundled() then return nil end
+        if not bt:hasBluealsaAvailable() then return nil end
         logger.warn("MediaEngine: BlueALSA not running, starting it for BT playback")
         if not bt:startBluealsa() and not bt:isBluealsaRunning() then
             logger.warn("MediaEngine: BlueALSA did not start, falling back to aplay")

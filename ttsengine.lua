@@ -4733,7 +4733,7 @@ function TTSEngine:findAudioPlayer()
         -- and audio fell through to a bare aplay with "no soundcards"
         -- (issue #8).
         if not bt:isBluealsaRunning()
-            and bt:hasBluealsaBundled()
+            and bt:hasBluealsaAvailable()
             and bt:getStackType() == "bluez" then
             logger.warn("TTSEngine: BlueALSA bundled but not running, starting it")
             local ba_ok = bt:startBluealsa()
