@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Extract _("...") / _([[...]]) strings and write koreader.pot + fr/es .po files."""
+"""Extract _("...") / _([[...]]) strings and write koreader.pot + the fr/es/sk/cs .po files."""
 
 from __future__ import annotations
 
@@ -11,7 +11,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 L10N = ROOT / "l10n"
-VERSION = "0.1.17.40"
+VERSION = "0.2.8"
 
 SKIP_NAME_EXACT = {"debuglog.lua"}
 SKIP_NAME_SUBSTR = (".fix", ".v25")
@@ -332,22 +332,25 @@ def main() -> int:
         return 0
 
     from translations import TRANSLATIONS_FR, TRANSLATIONS_ES  # noqa: WPS433
+    from translations_sk import TRANSLATIONS_SK  # noqa: WPS433
+    from translations_cs import TRANSLATIONS_CS  # noqa: WPS433
 
-    missing_fr = [m for m in ordered if not TRANSLATIONS_FR.get(m)]
-    missing_es = [m for m in ordered if not TRANSLATIONS_ES.get(m)]
-    if missing_fr or missing_es:
-        print(f"MISSING FR: {len(missing_fr)}  ES: {len(missing_es)}")
-        for m in missing_fr[:30]:
-            print("  FR:", repr(m)[:120])
-        for m in missing_es[:30]:
-            print("  ES:", repr(m)[:120])
-        miss_path = ROOT / "tools" / "_missing.json"
-        miss_path.write_text(
-            json.dumps({"fr": missing_fr, "es": missing_es}, ensure_ascii=False, indent=2),
-            encoding="utf-8",
-        )
-        print(f"Wrote missing list to {miss_path}")
-        return 1
+    # Every catalog is written even when some strings are untranslated
+    # (empty msgstr falls back to English in the loader).  Missing strings
+    # still fail the run through the exit code and _missing.json, so the
+    # "new strings need translations" signal is not lost; incomplete
+    # languages no longer block the regeneration of complete ones.
+    targets = [
+        ("fr", "nplurals=2; plural=(n > 1);", TRANSLATIONS_FR),
+        ("es", "nplurals=2; plural=(n != 1);", TRANSLATIONS_ES),
+        ("sk", "nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;", TRANSLATIONS_SK),
+        ("cs", "nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;", TRANSLATIONS_CS),
+    ]
+
+    missing_by_lang = {
+        lang: [m for m in ordered if not tr.get(m)]
+        for lang, _plural, tr in targets
+    }
 
     pot_dir = L10N / "templates"
     pot_dir.mkdir(parents=True, exist_ok=True)
@@ -370,34 +373,49 @@ def main() -> int:
             ref_str = " ".join(f"{f}:{ln}" for f, ln in refs[:8])
             out_lines.append(f"#: {ref_str}")
             out_lines.append(f"msgid {format_po_string(m)}")
-            out_lines.append(f"msgstr {format_po_string(translations[m])}")
+            out_lines.append(f"msgstr {format_po_string(translations.get(m, ''))}")
             out_lines.append("")
         path.write_text("\n".join(out_lines) + "\n", encoding="utf-8")
 
-    fr_path = L10N / "fr" / "koreader.po"
-    es_path = L10N / "es" / "koreader.po"
-    write_lang("fr", "nplurals=2; plural=(n > 1);", TRANSLATIONS_FR, fr_path)
-    write_lang("es", "nplurals=2; plural=(n != 1);", TRANSLATIONS_ES, es_path)
+    for lang, plural, tr in targets:
+        write_lang(lang, plural, tr, L10N / lang / "koreader.po")
 
     pot_n, _ = count_msgids(pot_path)
-    fr_n, fr_ne = count_msgids(fr_path)
-    es_n, es_ne = count_msgids(es_path)
     print(f"unique extracted: {len(ordered)}")
     print(f"pot msgids: {pot_n}")
-    print(f"fr msgids: {fr_n}, nonempty msgstr: {fr_ne}")
-    print(f"es msgids: {es_n}, nonempty msgstr: {es_ne}")
     print(f"wrote: {pot_path}")
-    print(f"wrote: {fr_path}")
-    print(f"wrote: {es_path}")
+    counts = {"pot": pot_n}
+    for lang, _plural, _tr in targets:
+        n, ne = count_msgids(L10N / lang / "koreader.po")
+        counts[lang] = n
+        print(f"{lang} msgids: {n}, nonempty msgstr: {ne}")
+        print(f"wrote: {L10N / lang / 'koreader.po'}")
 
     meta = next((m for m in ordered if m.startswith("Text-to-Speech with synchronized")), None)
     if meta:
-        print("meta FR:", TRANSLATIONS_FR[meta][:70])
-        print("meta ES:", TRANSLATIONS_ES[meta][:70])
+        for lang, _plural, tr in targets:
+            if tr.get(meta):
+                print(f"meta {lang.upper()}:", tr[meta][:70])
 
-    ok = pot_n == fr_n == es_n == fr_ne == es_ne == len(ordered)
+    total_missing = sum(len(v) for v in missing_by_lang.values())
+    if total_missing:
+        miss_path = ROOT / "tools" / "_missing.json"
+        miss_path.write_text(
+            json.dumps(missing_by_lang, ensure_ascii=False, indent=2),
+            encoding="utf-8",
+        )
+        print(f"MISSING: " + "  ".join(
+            f"{lang.upper()}: {len(missing_by_lang[lang])}"
+            for lang, _p, _t in targets if missing_by_lang[lang]
+        ))
+        for lang, _p, _t in targets:
+            for m in missing_by_lang[lang][:30]:
+                print(f"  {lang.upper()}:", repr(m)[:120])
+        print(f"Wrote missing list to {miss_path}")
+
+    ok = all(counts[lang] == len(ordered) for lang in counts)
     print("VERIFY OK" if ok else "VERIFY FAILED")
-    return 0 if ok else 1
+    return 0 if ok and not total_missing else 1
 
 
 if __name__ == "__main__":
