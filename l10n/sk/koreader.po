@@ -622,7 +622,7 @@ msgstr ""
 "\n"
 "Toto jednorazové nastavenie je potrebné, pretože konfiguráciu firmvéru Bluetooth zapisuje štartovací proces Nickel a pri reštartoch len do KOReadera sa nezachová."
 
-#: btmanager.lua:1196
+#: btmanager.lua:1233
 msgid "Restoring Bluetooth connection…"
 msgstr "Obnovujem Bluetooth pripojenie…"
 
@@ -1191,8 +1191,8 @@ msgid "Keep playing when lid is closed"
 msgstr "Hrať aj pri zatvorenom kryte"
 
 #: main.lua:829
-msgid "When enabled, closing the case/cover will not stop audio playback. When disabled (default), playback pauses on lid close and resumes when reopened. Disabling prevents device crashes caused by audio processes running during hardware suspend."
-msgstr "Ak je zapnuté, zatvorenie puzdra/krytu nezastaví prehrávanie. Ak je vypnuté (predvolené), prehrávanie sa pri zatvorení krytu pozastaví a po otvorení pokračuje. Vypnutie predchádza pádom zariadenia spôsobeným zvukovými procesmi bežiacimi počas uspania hardvéru."
+msgid "When enabled, closing the case/cover keeps audio playing: the device stays awake while something is playing and suspends on its own within 30 seconds once playback stops or pauses. When disabled (default), playback pauses on lid close and resumes when reopened. Disabling prevents device crashes caused by audio processes running during hardware suspend."
+msgstr ""
 
 #: main.lua:832
 msgid "Pause reading when a menu opens"
@@ -1556,31 +1556,31 @@ msgstr ""
 "Nenašli sa žiadne audiosúbory v\n"
 "%1"
 
-#: main.lua:2222 main.lua:2677 main.lua:4863
+#: main.lua:2222 main.lua:2677 main.lua:4927
 msgid "Unknown book"
 msgstr "Neznáma kniha"
 
-#: main.lua:2232 main.lua:4866
+#: main.lua:2232 main.lua:4930
 msgid "Resume from %1?"
 msgstr "Pokračovať od %1?"
 
-#: main.lua:2234 main.lua:2681 main.lua:4868
+#: main.lua:2234 main.lua:2681 main.lua:4932
 msgid "Book: %1"
 msgstr "Kniha: %1"
 
-#: main.lua:2237 main.lua:2684 main.lua:4871
+#: main.lua:2237 main.lua:2684 main.lua:4935
 msgid "Chapter: %1"
 msgstr "Kapitola: %1"
 
-#: main.lua:2240 main.lua:2688 main.lua:4883
+#: main.lua:2240 main.lua:2688 main.lua:4947
 msgid "Last played: %1"
 msgstr "Naposledy prehrané: %1"
 
-#: main.lua:2243 main.lua:2702 main.lua:4886
+#: main.lua:2243 main.lua:2702 main.lua:4950
 msgid "Resume"
 msgstr "Pokračovať"
 
-#: main.lua:2251 main.lua:2717 main.lua:4894
+#: main.lua:2251 main.lua:2717 main.lua:4958
 msgid "From start"
 msgstr "Od začiatku"
 
@@ -1684,11 +1684,11 @@ msgstr ""
 msgid "Could not retrieve page text for TTS."
 msgstr "Nepodarilo sa získať text strany pre TTS."
 
-#: main.lua:4714
+#: main.lua:4778
 msgid "Audiobookshelf modules not available."
 msgstr "Moduly Audiobookshelf nie sú dostupné."
 
-#: main.lua:4879
+#: main.lua:4943
 msgid "File: %1"
 msgstr "Súbor: %1"
 

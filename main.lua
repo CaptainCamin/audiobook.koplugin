@@ -826,7 +826,7 @@ function Audiobook:addToMainMenu(menu_items)
                         callback = function()
                             self:toggleSetting("keep_playing_on_lid_close", false)
                         end,
-                        help_text = _("When enabled, closing the case/cover will not stop audio playback. When disabled (default), playback pauses on lid close and resumes when reopened. Disabling prevents device crashes caused by audio processes running during hardware suspend."),
+                        help_text = _("When enabled, closing the case/cover keeps audio playing: the device stays awake while something is playing and suspends on its own within 30 seconds once playback stops or pauses. When disabled (default), playback pauses on lid close and resumes when reopened. Disabling prevents device crashes caused by audio processes running during hardware suspend."),
                     },
                     {
                         text = _("Pause reading when a menu opens"),
@@ -4455,11 +4455,23 @@ function Audiobook:onCloseWidget()
     end
 end
 
+-- How often (seconds) the lid-close watchdog re-checks playback while a
+-- suspend block is active.  When nothing is audible anymore the device is
+-- sent to the normal suspend path within one interval plus a short
+-- confirmation delay.
+local LID_SUSPEND_CHECK_INTERVAL = 30
+-- A single non-playing observation can be a transient (track advance,
+-- sentence gap); the suspend only fires once it persists this long.
+local LID_CONFIRM_INTERVAL = 5
+
 --[[--
 Install custom SleepCoverClosed/Opened handlers.
 When "keep playing on lid close" is enabled AND audio is playing, the
 override prevents the device from entering full hardware suspend so
-audio continues uninterrupted.  When the setting is off (or audio isn't
+audio continues uninterrupted.  A watchdog re-checks playback every
+LID_SUSPEND_CHECK_INTERVAL seconds and runs the original suspend path
+the moment playback stops or pauses, so the device never lies awake
+with nothing audible.  When the setting is off (or audio isn't
 playing), the original KOReader handlers are called normally.
 --]]
 function Audiobook:_installSleepCoverOverride()
@@ -4477,17 +4489,53 @@ function Audiobook:_installSleepCoverOverride()
 
     local plugin = self
 
+    -- Watchdog body: while a lid-close suspend block is active, re-check
+    -- playback and fall back to the original suspend path as soon as
+    -- nothing is playing anymore (BT pause button, sleep timer, playlist
+    -- end, stalled pipeline).  A brief non-playing blip (track advance,
+    -- sentence gap) only suspends if it persists through the confirmation
+    -- re-check.
+    local function lidWatchdogTick()
+        if not plugin._prevented_lid_suspend then return end
+        local still_playing = false
+        if plugin.sync_controller and plugin.sync_controller:isPlaying() then
+            still_playing = true
+        end
+        if plugin.media_sync and plugin.media_sync:isPlaying() then
+            still_playing = true
+        end
+        if still_playing then
+            plugin._lid_watchdog_blip = false
+            UIManager:scheduleIn(LID_SUSPEND_CHECK_INTERVAL, lidWatchdogTick)
+            return
+        end
+        if not plugin._lid_watchdog_blip then
+            plugin._lid_watchdog_blip = true
+            UIManager:scheduleIn(LID_CONFIRM_INTERVAL, lidWatchdogTick)
+            return
+        end
+        plugin._lid_watchdog_blip = false
+        plugin._prevented_lid_suspend = false
+        logger.warn("Audiobook: lid closed but playback stopped, suspending device")
+        if plugin._orig_sleep_cover_closed then
+            plugin._orig_sleep_cover_closed()
+        end
+    end
+    plugin._lid_watchdog_tick = lidWatchdogTick
+
     UIManager.event_handlers.SleepCoverClosed = function()
         -- Stop any active session recording when the cover closes.
         if plugin.session_recorder then
             pcall(function() plugin.session_recorder:stop() end)
         end
-        -- Check if anything is playing (TTS or media file)
+        -- Check if anything is actually playing (TTS or media file).
+        -- A paused session must NOT block suspend: with nothing audible
+        -- the device has no reason to stay awake.
         local is_playing = false
-        if plugin.sync_controller and (plugin.sync_controller:isPlaying() or plugin.sync_controller:isPaused()) then
+        if plugin.sync_controller and plugin.sync_controller:isPlaying() then
             is_playing = true
         end
-        if plugin.media_sync and (plugin.media_sync:isPlaying() or plugin.media_sync:isPaused()) then
+        if plugin.media_sync and plugin.media_sync:isPlaying() then
             is_playing = true
         end
         -- If "keep playing" is on AND we're actively playing, prevent suspend
@@ -4495,8 +4543,16 @@ function Audiobook:_installSleepCoverOverride()
             if Device.is_cover_closed ~= nil then
                 Device.is_cover_closed = true
             end
+            local was_already_prevented = plugin._prevented_lid_suspend
             plugin._prevented_lid_suspend = true
-            logger.warn("Audiobook: SleepCover closed — keeping audio alive (suspend prevented)")
+            if not was_already_prevented then
+                logger.warn("Audiobook: SleepCover closed — keeping audio alive (suspend prevented)")
+            end
+            -- Arm the watchdog so the device suspends shortly after
+            -- playback stops instead of draining the battery awake.
+            plugin._lid_watchdog_blip = false
+            UIManager:unschedule(lidWatchdogTick)
+            UIManager:scheduleIn(LID_SUSPEND_CHECK_INTERVAL, lidWatchdogTick)
             return
         end
         -- Setting off or not playing: use original KOReader behavior
@@ -4512,6 +4568,8 @@ function Audiobook:_installSleepCoverOverride()
         if plugin._prevented_lid_suspend then
             -- We blocked suspend on close, so there's nothing to resume from
             plugin._prevented_lid_suspend = false
+            plugin._lid_watchdog_blip = false
+            UIManager:unschedule(lidWatchdogTick)
             logger.warn("Audiobook: SleepCover opened — no resume needed (suspend was prevented)")
             return
         end
@@ -4531,6 +4589,11 @@ Called on plugin teardown to leave KOReader in a clean state.
 function Audiobook:_removeSleepCoverOverride()
     if not self._orig_sleep_cover_closed then return end
 
+    if self._lid_watchdog_tick then
+        pcall(function() UIManager:unschedule(self._lid_watchdog_tick) end)
+        self._lid_watchdog_tick = nil
+    end
+
     if UIManager.event_handlers then
         UIManager.event_handlers.SleepCoverClosed = self._orig_sleep_cover_closed
         UIManager.event_handlers.SleepCoverOpened = self._orig_sleep_cover_opened
@@ -4538,6 +4601,7 @@ function Audiobook:_removeSleepCoverOverride()
     self._orig_sleep_cover_closed = nil
     self._orig_sleep_cover_opened = nil
     self._prevented_lid_suspend = nil
+    self._lid_watchdog_blip = nil
     logger.dbg("Audiobook: SleepCover override removed")
 end
 

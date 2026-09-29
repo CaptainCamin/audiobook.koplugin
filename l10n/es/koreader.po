@@ -621,7 +621,7 @@ msgstr ""
 "\n"
 "Esta configuración única es necesaria porque la configuración del firmware Bluetooth se escribe mediante el proceso de inicio de Nickel y no se conserva en los reinicios solo de KOReader."
 
-#: btmanager.lua:1196
+#: btmanager.lua:1233
 msgid "Restoring Bluetooth connection…"
 msgstr ""
 
@@ -1184,8 +1184,8 @@ msgid "Keep playing when lid is closed"
 msgstr "Seguir reproduciendo con la tapa cerrada"
 
 #: main.lua:829
-msgid "When enabled, closing the case/cover will not stop audio playback. When disabled (default), playback pauses on lid close and resumes when reopened. Disabling prevents device crashes caused by audio processes running during hardware suspend."
-msgstr "Cuando está habilitado, cerrar el estuche/cubierta no detendrá la reproducción de audio. Cuando está deshabilitado (predeterminado), la reproducción se detiene al cerrar la tapa y se reanuda cuando se vuelve a abrir. La desactivación evita fallos del dispositivo causados ​​por procesos de audio que se ejecutan durante la suspensión del hardware."
+msgid "When enabled, closing the case/cover keeps audio playing: the device stays awake while something is playing and suspends on its own within 30 seconds once playback stops or pauses. When disabled (default), playback pauses on lid close and resumes when reopened. Disabling prevents device crashes caused by audio processes running during hardware suspend."
+msgstr ""
 
 #: main.lua:832
 msgid "Pause reading when a menu opens"
@@ -1549,31 +1549,31 @@ msgstr ""
 "No se encontraron archivos de audio en\n"
 "%1"
 
-#: main.lua:2222 main.lua:2677 main.lua:4863
+#: main.lua:2222 main.lua:2677 main.lua:4927
 msgid "Unknown book"
 msgstr "Libro desconocido"
 
-#: main.lua:2232 main.lua:4866
+#: main.lua:2232 main.lua:4930
 msgid "Resume from %1?"
 msgstr "¿Continuar desde %1?"
 
-#: main.lua:2234 main.lua:2681 main.lua:4868
+#: main.lua:2234 main.lua:2681 main.lua:4932
 msgid "Book: %1"
 msgstr "Libro: %1"
 
-#: main.lua:2237 main.lua:2684 main.lua:4871
+#: main.lua:2237 main.lua:2684 main.lua:4935
 msgid "Chapter: %1"
 msgstr "Capítulo: %1"
 
-#: main.lua:2240 main.lua:2688 main.lua:4883
+#: main.lua:2240 main.lua:2688 main.lua:4947
 msgid "Last played: %1"
 msgstr "Último jugado: %1"
 
-#: main.lua:2243 main.lua:2702 main.lua:4886
+#: main.lua:2243 main.lua:2702 main.lua:4950
 msgid "Resume"
 msgstr "Continuar"
 
-#: main.lua:2251 main.lua:2717 main.lua:4894
+#: main.lua:2251 main.lua:2717 main.lua:4958
 msgid "From start"
 msgstr "Desde el inicio"
 
@@ -1677,11 +1677,11 @@ msgstr ""
 msgid "Could not retrieve page text for TTS."
 msgstr "No se pudo recuperar el texto de la página para TTS."
 
-#: main.lua:4714
+#: main.lua:4778
 msgid "Audiobookshelf modules not available."
 msgstr "Módulos Audiobookshelf no disponibles."
 
-#: main.lua:4879
+#: main.lua:4943
 msgid "File: %1"
 msgstr ""
 
