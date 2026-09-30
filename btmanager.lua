@@ -504,6 +504,55 @@ function BTManager:_rfkillBlock()
     self._rfkill_sysfs = nil
 end
 
+--- Restore or remove sunxi BT chip power.
+-- koreader.sh (Kobo platform) powers the BT chip down when KOReader
+-- starts from Nickel on sunxi devices (Kobo Sage/Elipsa): it writes 0
+-- to /sys/devices/platform/bt/rfkill/rfkill0/state and flips the chip
+-- power rail with "ntx_io 126 0".  This method reverses (or re-applies)
+-- that pair.  Neither step exists on other SoC families, so both are
+-- best-effort and skipped silently when the files are absent.
+-- @bool on true to restore power, false to cut it again
+function BTManager:_sunxiBtPower(on)
+    local state_path = "/sys/devices/platform/bt/rfkill/rfkill0/state"
+    local want = on and "1" or "0"
+    local st = io.open(state_path, "r")
+    if st then
+        local v = st:read("*l") or ""
+        st:close()
+        if v:match("%S") and v:gsub("%s+", "") ~= want then
+            local sw = io.open(state_path, "w")
+            if sw then
+                sw:write(want .. "\n")
+                sw:close()
+                logger.warn("BTManager: sunxi BT rfkill state " .. want)
+            end
+        end
+    end
+    -- Chip power rail via the ntx_io ioctl, using KOReader's own helper.
+    local plugin_dir = debug.getinfo(1, "S").source:match("^@(.*/)[^/]*$") or "./"
+    local ko_root = plugin_dir:gsub("plugins/audiobook%.koplugin/$", "")
+    if ko_root ~= plugin_dir then
+        local lf = io.open(ko_root .. "luajit", "r")
+        local nf = io.open(ko_root .. "frontend/device/kobo/ntx_io.lua", "r")
+        local have = lf and nf
+        if lf then lf:close() end
+        if nf then nf:close() end
+        if have then
+            logger.warn("BTManager: sunxi BT chip power via ntx_io 126 " .. (on and 1 or 0))
+            os.execute(string.format(
+                "'%sluajit' '%sfrontend/device/kobo/ntx_io.lua' 126 %d 2>/dev/null",
+                ko_root, ko_root, on and 1 or 0))
+        end
+    end
+    if on then
+        -- Give the controller a moment to register before the HCI dance.
+        os.execute("sleep 1")
+        self._sunxi_bt_powered = true
+    else
+        self._sunxi_bt_powered = nil
+    end
+end
+
 --- Check for MTK firmware file before powering on.
 -- The MTK Bluetooth stack needs /data/misc/bluedroid/bt_fw_fatures
 -- (created by Nickel).  Without it, FifoManager init fails and the
@@ -672,6 +721,16 @@ function BTManager:powerOn()
                 self:_loadBtModule()
             end
 
+            -- On sunxi SoCs (Kobo Sage/Elipsa), koreader.sh powers the BT
+            -- chip down on KOReader entry: it writes 0 to the rfkill state
+            -- file and flips the chip power via the ntx_io 126 ioctl.  An
+            -- rfkill soft-unblock alone leaves the controller unpowered:
+            -- hci0 then never comes up and bluetoothctl fails with
+            -- org.bluez.Error.Failed (issue #93 crash.log: 12 s wait on a
+            -- Sage fw 4.38).  Reverse the teardown: restore chip power,
+            -- then clear the rfkill gate.
+            self:_sunxiBtPower(true)
+
             -- On AllWinner SoC models (PocketBook Era, InkPad Color, etc.),
             -- BT is gated by rfkill rather than a kernel module.  Unblock
             -- bluetooth before starting the daemon.
@@ -739,9 +798,13 @@ function BTManager:powerOn()
                     local h2 = io.popen("hciconfig hci0 2>/dev/null")
                     local r2 = h2 and h2:read("*a") or ""
                     if h2 then h2:close() end
-                    if r2:match("hci0") then
+                    -- Same rule as the main poll: require the UP flag.
+                    -- An adapter that merely registered (no UP) passes
+                    -- the old "hci0 in output" check but carries no
+                    -- powered radio, so playback would race a dead link.
+                    if r2:match("UP") then
                         hci_ready = true
-                        logger.warn("BTManager: hci0 appeared after bluetoothctl power on")
+                        logger.warn("BTManager: hci0 up after bluetoothctl power on")
                     end
                 end
             end
@@ -838,6 +901,11 @@ function BTManager:powerOff()
         if self:_isBtModuleLoaded() then
             os.execute("rmmod sdio_bt_pwr 2>/dev/null")
             logger.warn("BTManager: unloaded sdio_bt_pwr")
+        end
+        -- Cut the sunxi chip power again when powerOn restored it
+        -- (matches the teardown koreader.sh performs on entry)
+        if self._sunxi_bt_powered then
+            self:_sunxiBtPower(false)
         end
         -- Re-block rfkill (matches the unblock in powerOn)
         self:_rfkillBlock()
@@ -963,6 +1031,20 @@ function BTManager:startBluealsa()
     if not sys_bin and not bin then
         logger.warn("BTManager: no bluealsa binary available (not shipped by firmware, not bundled)")
         return false
+    end
+
+    -- bluez-alsa registers its A2DP endpoints with BlueZ at startup.  If
+    -- bluetoothd is not on the system bus yet (koreader.sh kills it when
+    -- KOReader starts from Nickel), the daemon sits with no endpoints and
+    -- every PCM open fails with "Couldn't get BlueALSA PCM: PCM not
+    -- found" even though the process is running (issue #93 crash.log on
+    -- Sage fw 4.38: bluealsa started 12 s before bluetoothd).  Make sure
+    -- BlueZ is up before launching.
+    if not is_bluetoothd_running() then
+        local daemon = bluetoothd_path or "bluetoothd"
+        logger.warn("BTManager: starting bluetoothd before bluealsa (endpoints need BlueZ)")
+        os.execute(daemon .. " 2>/dev/null &")
+        os.execute("sleep 2")
     end
 
     local ba_dir = findBluealsaDir()
@@ -1108,6 +1190,24 @@ function BTManager:startBluealsa()
             end
         else
             logger.err("BTManager: bluealsa startup log not found at", ba_log)
+        end
+        logger.warn("BTManager: bluealsa started:", running)
+        return running
+    end
+
+    -- A headset that (re)connected while the daemon was down carries no
+    -- A2DP transport: BlueZ only negotiates the profile through the
+    -- registered endpoints, and the daemon was not there.  Cycle the
+    -- connection once so the transport forms against the fresh daemon;
+    -- without this every PCM open fails with "PCM not found" while
+    -- BlueZ keeps reporting the device as connected (issue #93).
+    for _, dev in ipairs(self:listAudioDevices() or {}) do
+        if dev.connected then
+            logger.warn("BTManager: cycling connection to",
+                dev.address, "so A2DP re-negotiates with the fresh daemon")
+            self:disconnect(dev.address)
+            os.execute("sleep 1")
+            self:connect(dev.address)
         end
     end
 
