@@ -1494,6 +1494,13 @@ function TTSEngine:_androidChunkLanguage(text)
         end
         return "zh-CN"
     end
+    -- Chunks with no detectable script (numbers, punctuation, Latin
+    -- fragments inside a CJK book): reuse the last language the engine
+    -- accepted rather than flipping to en-US, which monolingual engines
+    -- reject and which kills read-aloud mid-page (issue #96).
+    if self._android_last_good_lang and not book then
+        return self._android_last_good_lang
+    end
     return book or "en-US"
 end
 
@@ -1680,8 +1687,16 @@ function TTSEngine:synthesizeAndroid(text, audio_file, callback)
         end
     elseif chunk_lang and chunk_lang ~= self._android_tts_lang then
         local res = atts:setLanguage(chunk_lang)
-        self._android_tts_lang = chunk_lang
-        self._android_tts_voice = nil
+        -- Only cache the language on success: recording a failed switch
+        -- would keep the engine on its previous language while Lua
+        -- believes otherwise, and repeated failed switches break some
+        -- engines outright (monolingual engines like Xiaomi mibrain
+        -- reject the languages they have no voice for, issue #96).
+        if res and res >= 0 then
+            self._android_tts_lang = chunk_lang
+            self._android_last_good_lang = chunk_lang
+            self._android_tts_voice = nil
+        end
         logger.dbg("TTSEngine: Android TTS language =", chunk_lang, "result:", res)
         if res and res < 0 and not self._android_lang_warned then
             -- LANG_MISSING_DATA / LANG_NOT_SUPPORTED: voice data not
@@ -1703,9 +1718,13 @@ function TTSEngine:synthesizeAndroid(text, audio_file, callback)
     local dispatch = atts:synthesizeAndPlay(text, audio_file)
     -- Right after lazy init / setLanguage the engine can still report
     -- not-ready (-1).  Brief retries beat skipping the first sentences.
+    -- Some engines (Xiaomi mibrain, issue #96) also refuse a new
+    -- utterance briefly while the previous one is still flushing; 8
+    -- x 50 ms was too short and read-aloud died mid-book, so back off
+    -- over a 2 s window before giving up.
     if dispatch == -1 then
-        for _ = 1, 8 do
-            os.execute("usleep 50000")
+        for i = 1, 20 do
+            os.execute("usleep " .. (i <= 8 and 50000 or 100000))
             dispatch = atts:synthesizeAndPlay(text, audio_file)
             if dispatch == 0 then break end
         end

@@ -1275,6 +1275,21 @@ function SyncController:beginSentencePlayback(sentence)
     local sentences_in_play = 1 + #concat_sentences
     local my_chain_gen = self._chain_generation or 0
 
+    -- Android: a nil audio file here means the synthesis pipeline never
+    -- reached "playing" even though the callback reported success (a
+    -- system-engine hiccup, e.g. Xiaomi's engine briefly refusing
+    -- back-to-back utterances).  play() would only pop "No audio file
+    -- to play." and return false, dead-ending the chain silently (the
+    -- caller has no handler for a falsy return).  Route it through the
+    -- Android failure path instead: it retries the sentence and only
+    -- stops after repeated failures, with an actionable message.
+    if self.tts_engine.backend == self.tts_engine.BACKENDS.ANDROID
+            and not self.tts_engine.current_audio_file then
+        logger.warn("SyncController: play() without audio file, Android retry")
+        self:_onAndroidSynthFailed("play without audio file")
+        return
+    end
+
     -- Start TTS audio playback with callbacks
     local play_ok = self.tts_engine:play(
         -- Word callback
