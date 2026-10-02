@@ -1194,12 +1194,37 @@ function MediaEngine:load(path)
     return true
 end
 
+--- Kindle /var is a 64 MB tmpfs shared with audiomgrd's stderr log
+--- (/var/tmp/audiomgrd.err), which audiomgrd keeps open and can grow without
+--- bound.  A full /var breaks audio mid-playback, so reclaim space before
+--- starting a pipeline.  The log is truncated in place: rm would leave the
+--- space allocated (audiomgrd holds the inode) and hide it from du.
+function MediaEngine:_kindleVarPreflight()
+    if not self:_isKindle() then return end
+    local h = io.popen("df /var 2>/dev/null | tail -1")
+    if not h then return end
+    local line = h:read("*a") or ""
+    h:close()
+    local _fs, _blocks, _used, avail, pct = line:match("^(%S+)%s+(%S+)%s+(%S+)%s+(%S+)%s+(%S+)")
+    local use_pct = tonumber(pct and pct:match("(%d+)"))
+    local avail_kb = tonumber(avail)
+    if not (use_pct and (use_pct >= 90 or (avail_kb and avail_kb < 5120))) then
+        return
+    end
+    logger.warn("MediaEngine: /var is", use_pct, "% full (", avail_kb, "KB free) -- reclaiming space")
+    os.execute("rm -f /var/tmp/abk-progress-* /var/tmp/abk-keepalive.log"
+        .. " /var/tmp/audiobook_*.wav /var/tmp/.gst_play_last.log /var/tmp/*.tmp 2>/dev/null;"
+        .. " [ -f /var/tmp/audiomgrd.err ] && : > /var/tmp/audiomgrd.err")
+end
+
 function MediaEngine:play(on_complete, on_fail)
     if not self.current_path then
         logger.err("MediaEngine: play() called without load()")
         if on_fail then on_fail("no file loaded") end
         return false
     end
+
+    self:_kindleVarPreflight()
 
     -- Kindle A2DP (AirPods): any stop→play gap (seek, track advance, resume)
     -- lets audiomgrd suspend the datapath.  Park silence first so orphan-kill
