@@ -1824,7 +1824,7 @@ find /usr /system /vendor /mnt /data -maxdepth 4 -name '*audio*.so*' 2>/dev/null
     -- probing; on a 64MB /var tmpfs this can fill the filesystem and
     -- break subsequent TTS attempts (issue #23).
     -- Also remove plugin temp files (WAV, FIFO, logs) from previous sessions.
-    os.execute("rm -f /var/tmp/audiobook_*.wav /var/tmp/audiobook_*.xml /var/tmp/audiobook_*.txt /var/tmp/audiobook_*.done /var/tmp/piper_server_* /var/tmp/.gst_play_last.log /var/tmp/.ttssrc_* /var/tmp/audiomgrd.err /var/tmp/*.tmp 2>/dev/null")
+    os.execute("rm -f /var/tmp/audiobook_*.wav /var/tmp/audiobook_*.xml /var/tmp/audiobook_*.txt /var/tmp/audiobook_*.done /var/tmp/piper_server_* /var/tmp/.gst_play_last.log /var/tmp/.ttssrc_* /var/tmp/*.tmp 2>/dev/null; [ -f /var/tmp/audiomgrd.err ] && : > /var/tmp/audiomgrd.err")
 
     return info
 end
@@ -1837,6 +1837,11 @@ local function collectResourceInfo()
     info.disk_var = shellCapture("df -h /var 2>/dev/null | tail -1", 2)
     info.disk_var_usage = shellCapture(
         "du -sk /var/* 2>/dev/null | sort -rn | head -15", 3) or "n/a"
+    -- Largest files per /var dir, to find what is filling the 64 MB tmpfs,
+    -- plus audiomgrd's stderr log size (it grows while held open).
+    info.var_tmp_largest = shellCapture("ls -laS /var/tmp 2>/dev/null | head -12", 3) or "n/a"
+    info.var_log_largest = shellCapture("ls -laS /var/log 2>/dev/null | head -12", 3) or "n/a"
+    info.audiomgrd_err_size = shellCapture("ls -la /var/tmp/audiomgrd.err 2>/dev/null", 2) or "n/a"
     return info
 end
 
