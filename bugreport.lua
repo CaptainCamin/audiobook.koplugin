@@ -1839,6 +1839,14 @@ local function collectResourceInfo()
         "du -sk /var/* 2>/dev/null | sort -rn | head -15", 3) or "n/a"
     -- Largest files per /var dir, to find what is filling the 64 MB tmpfs,
     -- plus audiomgrd's stderr log size (it grows while held open).
+    -- Revision marker: lets us confirm the patched bugreport.lua is the one running.
+    info.var_diag_rev = "2"
+    -- Includes dotfiles (the /var/* glob above skips them) and the mount type,
+    -- since /var/tmp may not live on the /var tmpfs.
+    info.var_top_level = shellCapture("ls -la /var 2>/dev/null | head -30", 3) or "n/a"
+    info.var_mounts = shellCapture("mount 2>/dev/null | grep -E ' /var| /tmp'", 3) or "n/a"
+    info.var_largest_paths = shellCapture(
+        "du -ak /var 2>/dev/null | sort -rn | head -25", 6) or "n/a"
     info.var_tmp_largest = shellCapture("ls -laS /var/tmp 2>/dev/null | head -12", 3) or "n/a"
     info.var_log_largest = shellCapture("ls -laS /var/log 2>/dev/null | head -12", 3) or "n/a"
     info.audiomgrd_err_size = shellCapture("ls -la /var/tmp/audiomgrd.err 2>/dev/null", 2) or "n/a"
